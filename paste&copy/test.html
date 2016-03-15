@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>paste&copy</title>
+</head>
+<body>
+	<div>
+		hello world
+	</div>
+	<div style="height:200px;width:200px" contenteditable="true"></div>
+	<img src="../canvas/yudi.jpg" alt="" height="100">
+	<input type="text">
+	<script>
+		document.onpaste = function(event) {
+			var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+			console.log(items); // will give you the mime types
+			var blob = items[0].getAsFile();
+			var reader = new FileReader();
+			reader.onload = function(event) {
+				console.log(event.target.result)
+			}; // data url!
+			reader.readAsDataURL(blob);
+		}
+		document.body.addEventListener("copy", function(e) {
+			var clipboardData = e.clipboardData.getData("Image");
+			console.log(clipboardData);
+		});
+	</script>
+</body>
+</html>

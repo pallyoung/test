@@ -1,0 +1,61 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+    body{font-size: 12px;}
+    *{margin: 0;padding: 0}
+    ul li{list-style-type: none;}
+    </style>
+    <script type="text/javascript" src="js/base.js"></script>   
+</head>
+<body >
+<style type="text/css"> 
+
+                ul.tabList{margin-right: -60px;
+                    width: 100%;
+                    float: :left;
+                    margin: 0;
+                    padding: 0;
+                }  
+                ul.tabList .tab{
+                    width:200px;
+                    background-color: rgb(197,169,219);
+                    border: 1px solid black;
+                    display: inline-block;
+                    }
+                ul.tabList .tabSelected{
+                    background-color: white;
+                }
+                ul.tabList .addTab{
+                                        width: 2em;
+                }
+                ul.tabList .tab .title{
+                    display: inline-block;
+                    line-height: 2em;
+                    width: 100px;
+                }
+            .btn{display: inline-block;
+                height: 2em;
+            width: 20px;
+            background-image: url(imgs/browserIcon.png);
+            }
+            .close{
+                background-position: -60px 0;
+            }
+             
+            
+</style>   
+ <ul class="tabList">
+                <li class="tab tabSelected">
+                    <p class="title">打开新的选项卡</p>
+                    <a class="close btn" style="float:right" href="javascript:void(0)"></a>
+                </li>
+                <li class="tab addTab" action="browser.prototype.tab.add()">
+                </li>
+            </ul>
+
+
+
+</body>
+</html>

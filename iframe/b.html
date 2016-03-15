@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<script>
+	window.onload=function (argument) {
+		
+		var a=Date.now();
+		while(Date.now()-a<5000){
+			console.log("from b");
+		}
+		console.log("from b",parent.a);
+	}
+	</script>
+	<div style="width:100px;height:100px;position:fixed;top:100px;">
+		
+	</div>
+</body>
+</html>

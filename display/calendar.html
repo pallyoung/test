@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <style type='text/css'>
+    body{font-size: 12px;}
+    *{margin: 0;padding: 0}
+    ul li{list-style-type: none;}
+    </style>
+    <script type='text/javascript' src='js/fan6.js'></script>
+</head>
+<body >
+    <style>
+        .calendar { width: 98%;padding: 1%; background-color: rgb(93,44,89);text-align:center;overflow:hidden;font-family: "微软雅黑",'arial',sans-serif}
+        .calendar h1{text-align:center;font:bold 30px/30px "arial",sans-serif;margin-top: 30px}
+        .month { width: 31%; margin: 1%;border: none;height:18em;float: left; background-color: rgb(226,190,220); }
+        .monthName {width:100%;line-height:2em;background-color:white ;font-size:14px;text-align:left;color: rgb(85,52,95);}
+        .row {width:96%;padding:0 2%;text-align:center; }
+        .row span { width:13%;height:2em;line-height:2em;display: inline-block;}
+        .day {background-color: rgb(161,124,151);color:white; }
+        .date { } 
+        .selected{background-color: rgb(224,129,99)}
+        .today{background-color:rgb(158,184,221);}
+    </style>
+    <script type="text/javascript">
+    function calendar () {
+        this.iYear=1998;
+        this.oYears={};
+        this.aMonths=['Jan','Feb','Match','April','May','June','July','Aug','Sep','Oct','Nov','Dec'];//月份
+        this.aWeeks=['Sun','Mon','Tues','Wed','Thur','Fri','Sat'];
+        this.aMonthCounter=[31,28,31,30,31,30,31,31,30,31,30,31];//每月天数
+        
+        
+    }
+    calendar.prototype = {
+        //确定平闰年
+        ifLeap:function(iYear){
+            if(iYear%4===0&&iYear%100!==0||iYear%400===0){
+            return 1
+        }
+            return 0;
+
+        },
+        setYear:function(iYear){
+            this.iYear=iYear;
+            var aMonthCounters=[[31,28,31,30,31,30,31,31,30,31,30,31],[31,29,31,30,31,30,31,31,30,31,30,31]]//每月天数
+            this.aMonthCounter=aMonthCounters[this.ifLeap(iYear)];
+
+        },
+        createWeekTable:function(){
+            var sTempString='';
+            sTempString+='<p class="row day">';
+            for(var i=0;i<7;i++){                
+                sTempString+='<span>'+this.aWeeks[i]+'</span>';
+            }
+            sTempString+='</p>';
+            return sTempString;
+        },
+        addMonth:function(iMonth){
+            var iWeek=new Date(this.iYear,iMonth).getDay();
+            var sTempString='<p class="row date">';
+            var eDiv=document.createElement("div");
+            eDiv.className='month'; 
+            eDiv.id=this.iYear+iMonth+'calendar';
+            eDiv.innerHTML+='<h3 class="monthName">'+this.aMonths[iMonth]+'</h3>';
+            eDiv.innerHTML+=this.createWeekTable();
+            for(var i=0;i<iWeek;i++){
+                sTempString+='<span></span>';
+            }
+            if(this.oYears[this.iYear]){
+                this.oYears[this.iYear][iMonth]=i.toString();
+            }else{
+                this.oYears[this.iYear]={};
+                this.oYears[this.iYear][iMonth]=i.toString();
+            }
+            for(var i=0;i<this.aMonthCounter[iMonth];i++){
+                sTempString+='<span>'+(i+1)+'</span>';
+            }
+            iWeek=7-new Date(this.iYear,iMonth,this.aMonthCounter[iMonth]).getDay();
+            for(var i=0;i<iWeek;i++){
+                sTempString+='<span></span>';
+            }
+            sTempString+='</p>';
+            eDiv.innerHTML+=sTempString;
+            return eDiv;
+       }, 
+       addYear:function(iYear){
+           if(iYear){
+           this.setYear(iYear);
+           }  
+           var eDiv=document.createElement("div");
+            eDiv.className='calendar'; 
+            eDiv.id=this.iYear+'calendar';
+            eDiv.innerHTML+='<h1>'+this.iYear+'</h1>'; 
+            for(var i=0;i<12;i++){
+              eDiv.appendChild(this.addMonth(i));  
+            }
+            return eDiv;
+
+       },
+        removeYear: function (iYear) {
+                 var eYear = document.getElementById( iYear+"calendar");
+                 if (eYear) {
+                     eYear.parentNode.removeChild(eYear);
+                 }
+                 delete this.oYears[iYear];
+             },
+       findToday:function(){
+        var today=new Date();
+        if(!this.oYears[today.getFullYear()]){
+            return;
+        }
+        if(!this.oYears[today.getFullYear()][today.getMonth()]){
+
+            return;
+
+        }
+        var temp=document.getElementById(today.getFullYear() + today.getMonth()+"calendar");
+        temp=temp.getElementsByClassName('date')[0];
+        temp=temp.getElementsByTagName("span")[parseInt(this.oYears[today.getFullYear()][today.getMonth()])+parseInt(today.getDate())-1];
+        temp.id = "calendarToday";
+       },
+       monthPosition:function(){
+
+       }
+    };
+    a=new calendar();
+    document.body.appendChild(a.addYear(2014))
+    a.findToday();
+</script></body>
+</html>

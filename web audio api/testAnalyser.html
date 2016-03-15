@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>testAnalyser</title>
+</head
+<body>
+<input type="file">
+<input type="button" value="play">
+<input type="button" value="stop">
+<div id="infobox" style="width:300px;"></div>
+<canvas width="800" height="400" id="dsper" style="position:absolute;left:400px;top:50px"></canvas>
+<script>
+	var context=new AudioContext();
+	var mediaSource=document.querySelectorAll("input")[0]
+	var playButton=document.querySelectorAll("input")[1];
+	var stopButton=document.querySelectorAll("input")[2];
+	var infoBox=document.querySelectorAll("div")[0];
+	var disper=document.querySelector("#dsper");
+	var disperCaller=null;
+	var	audioBufferSouceNode,analyser,buffer,filter,offsetTime=0;
+	var drawFreq=function(canvas,analyser){
+		var canvasContext=canvas.getContext("2d"),
+			height=canvas.height,
+			width=canvas.width,
+			blockWidth=10,
+			blockMargin=5,
+			blockNum=width/(blockWidth+blockMargin),
+			freqDomin=new Uint8Array(analyser.frequencyBinCount),
+			background="rgb(0,0,0)",
+			blockColor="rgb(10,100,200)",
+			eHeight;
+		analyser.getByteFrequencyData(freqDomin);
+		canvasContext.fillStyle=background;	
+		canvasContext.fillRect(0,0,width,height);
+		canvasContext.fillStyle=blockColor;
+		for(var i=0,l=blockNum;i<l;i++){
+			eHeight=height*(freqDomin[Math.round(i*freqDomin.length/blockNum)]/256);
+			canvasContext.fillRect((blockWidth+blockMargin)*i,height-eHeight,blockWidth,eHeight);
+		}
+		disperCaller=requestAnimationFrame(function(){
+			drawFreq(canvas,analyser);
+		});
+
+	}
+	mediaSource.addEventListener("change",function(e){
+		var target=e.target;
+		var output="<p>-----------------</p>";
+		var file=null;
+		var fr=null
+		if (target.files.length !== 0) {
+                file = target.files[0];
+                output+= "<p>name:"+file.name+"</p>";
+                output+="<p>loading</p>";
+                infoBox.innerHTML+=output;
+                fr=new FileReader();
+                fr.onload=function(e){
+                	var target=e.target;
+                	var result=target.result;
+                	var output="<p>loaded</p><p>decoding</p>";
+                	 infoBox.innerHTML+=output;
+                	 context.decodeAudioData(result, function(bf) {
+                	 	var output="<p>decode succussfully</p>";
+                	 	buffer=bf;
+                	 	infoBox.innerHTML+=output;
+                	 }, function(e) {
+                	 	var output="<p>decode failed</p>";
+                	 	infoBox.innerHTML+=output;
+                	 });
+
+                }
+               fr.readAsArrayBuffer(file);
+            };
+	},false);
+	playButton.onclick=function(){
+		var output="<p>playing</p>";
+        infoBox.innerHTML+=output;
+        audioBufferSouceNode = context.createBufferSource(),
+        filter=context.createBiquadFilter(),
+        analyser = context.createAnalyser();
+        filter.type = filter.LOWPASS;
+  		filter.frequency.value = 10000;
+  		audioBufferSouceNode.connect(filter);
+  		filter.connect(analyser);
+       // audioBufferSouceNode.connect(analyser);
+        audioBufferSouceNode.buffer = buffer;
+        analyser.connect(context.destination);
+		audioBufferSouceNode.start(0,offsetTime,buffer.duration);
+		offsetTime=Date.now()-offsetTime*1000;
+		disperCaller=drawFreq(disper,analyser);
+		audioBufferSouceNode.onended=function(){
+			offsetTime=(Date.now()-offsetTime)/1000;
+			var output="<p>ended</p>";
+			if(offsetTime>=buffer.duration){
+				offsetTime=0;				
+			}else{
+				output="<p>stoped</p>";
+			}		
+        	infoBox.innerHTML+=output;
+        	cancelAnimationFrame(disperCaller);
+		}
+	}
+	stopButton.onclick=function(){		
+		audioBufferSouceNode.stop(0);
+	}
+	</script>
+</body>
+</html>

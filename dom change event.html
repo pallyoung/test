@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>dom change事件</title>
+</head>
+<body>
+	<div>
+		<input type="text">
+		<input type="text"></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<script>
+	//insert事件 冒泡
+	document.body.addEventListener("DOMNodeInserted",function(e){
+		console.log(e.target);
+		console.log({}.toString.call(e.target));
+	},
+	false);
+	//移除事件 冒泡
+	document.body.addEventListener("DOMNodeRemoved",function(e){
+		console.log(e.target);
+		console.log({}.toString.call(e.target));
+	},
+	false);
+	//文本值变动事件 冒泡
+	document.body.addEventListener("DOMCharacterDataModified",function(e){
+		console.log(e.target);
+		console.log({}.toString.call(e.target));
+	},
+	false);
+	//属性变动 不冒泡 ie11 支持 但是chrome不支持
+	document.body.addEventListener("DOMAttrModified",function(e){
+		console.log(e.target);
+		console.log({}.toString.call(e.target));
+	},
+	false);
+	//突变事件  没用啊我靠
+	var observer=new MutationObserver(function(records){
+		records.map(function(record){
+        console.log('Mutation type: ' + record.type); 
+        console.log('Mutation target: ' + record.target);
+        console.log('Mutation content: ' + record.target);
+	});
+	});
+	var inputs=[].slice.call(document.querySelectorAll("input")),
+		divs=[].slice.call(document.querySelectorAll("div")),
+		body=document.body,
+		head=document.head;
+	observer.observe(body,{
+		childlist:true,
+		attributes:true,
+		characterData:true,
+		subtree:true//加入这个之后终于触发了，这个一定要指定为true
+	});
+	divs[2].addEventListener("DOMAttrModified",function(e){
+		console.log(e.target);
+		console.log({}.toString.call(e.target));
+	},
+	false);
+	inputs[0].addEventListener("DOMAttrModified",function(e){
+		console.log(e.target);
+		console.log({}.toString.call(e.target));
+	},
+	false);
+	inputs[0].value="111122";//不触发属性事件
+	divs[1].innerText="hello world";//触发了insert事件
+	divs[2].innerHTML="hello world22";//触发了insert事件
+	divs[2].innerHTML="<p></p>";//触发了移除事件移除了hello world22和insert事件
+	divs[1].innerText="hello world1";//触发了文本变动事件
+	divs[2].innerHTML="hello world3";//触发了移除事件移除了hello world22和insert事件
+	inputs[0].setAttribute("value","223334");//触发属性事件
+	divs[2].className='test';//不触发属性事件
+	</script>
+</body>
+</html>

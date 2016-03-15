@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>chat1</title>
+</head>
+<body>
+	<div id="message"></div>
+	<input type="text" id="send">
+	<script>
+		var msg=document.querySelector("#message");
+		var socket=new WebSocket("ws:localhost:3000/chat2.html");
+		// socket.onopen=function (e) {
+		// 	socket.send("89757");
+		// }
+		socket.onmessage=function(e){
+			msg.innerHTML+=e.data;
+		}
+	</script>
+</body>
+</html>

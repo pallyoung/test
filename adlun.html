@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>广告轮播</title>
+</head>
+<body>
+	<section id="lunbo">
+		<img src="" alt="">
+		<img src="" alt="">
+		<img src="" alt="">
+		<img src="" alt="">
+		<img src="" alt=""></section>
+	<script>
+	(function(){
+	var animation = function() {
+		this.timeout = null;
+		this.clear=null;
+	}
+	animation.prototype = {
+		dos :function(callBack, timeout) {
+			var that = this,
+				fun = function() {
+					try{
+						callBack();
+					}
+					catch(e){
+
+					}					
+					that.timeout = null;
+				};
+				if (timeout) {
+					this.timeout = setTimeout(fun, timeout);
+					this.clear=function(){
+						clearTimeout(this.timeout);
+						this.timeout=null;
+					}
+				} else {
+					this.timeout = requestAnimationFrame(fun);
+					this.clear=function(){
+						cancelAnimationFrame(this.timeout);
+						this.timeout=null;
+					}
+				}
+
+
+		}
+	}
+	var getPoint = function(event) {
+		if(event.targetTouches&&event.targetTouches.length!=0){
+			try{
+				return event.targetTouches[0].screenX;
+			}catch(e){
+				if(event.changeTouches){
+					try{
+						return event.changeTouches[0].screenX;
+					}
+					catch(e){
+						
+					}
+				}
+			}
+		}else{
+			return event.screenX;
+		}
+	}
+	var goto=function(event){
+		if(Date.now()-this.time<100){
+			location.href=this.imgBox.children[this.index].getAttribute("target");
+		}
+		this.time=0;
+		
+	}
+	var bindScroll = function(event) {
+		var that = this;
+		this.stop();
+		this.cover.style.display="block";
+		this.time=Date.now();
+		this.startPoint=getPoint (event);
+		var step=0;
+		var scrolling = function(event) {
+			event.stopPropagation();
+			event.preventDefault();
+			if (that.actions.timeout == null) {
+				that.actions.dos(function() {
+					that.endPoint = getPoint(event);
+					step = -that.endPoint + that.startPoint;
+					that.startPoint = that.endPoint;
+					doScroll.call(that);
+				});
+
+			}
+		}
+		var doScroll = function() {
+			if(parseFloat(this.imgBox.style.left)-step>=0){
+				this.imgBox.style.left="0px";
+				this.index=0;
+			}else if(this.step-parseFloat(this.imgBox.style.left)>=((this.length-1)*this.width)){
+				this.imgBox.style.left="0px";
+				this.index=0;
+			}else{
+				this.imgBox.style.left=(parseFloat(this.imgBox.style.left)-step)+"px";
+				this.index=Math.round(Math.abs(parseFloat(this.imgBox.style.left)/this.width));
+			}
+			
+			
+		}
+
+		var removeScroll = function(event) {
+			that.box.removeEventListener("touchmove", scrolling, false);
+			that.box.removeEventListener("mousemove", scrolling, false);
+			that.box.removeEventListener("touchend", removeScroll, false);
+			that.box.removeEventListener("mouseup", removeScroll, false);
+			that.box.removeEventListener("touchcancel", removeScroll, false);
+			that.box.removeEventListener("mouseout", removeScroll, false);
+			that.actions.clear();
+			var point=getPoint(event);
+			if(point-that.endPoint>0){
+				that.index=Math.floor(Math.abs(parseFloat(that.imgBox.style.left)/that.width));
+			}else if(point-that.endPoint<0){
+				that.index=Math.ceil(Math.abs(parseFloat(that.imgBox.style.left)/that.width));
+			}else{
+				that.index=Math.round(Math.abs(parseFloat(that.imgBox.style.left)/that.width));
+			}
+			that.endPoint = 0;
+			that.startPoint=0;
+			that.left=-parseFloat(that.imgBox.style.left);
+			
+			//that.cover.style.display="none";
+			that.playOnce();
+		}
+		this.startPoint = getPoint(event);
+		this.box.addEventListener("touchmove", scrolling, false);
+		this.box.addEventListener("mousemove", scrolling, false);
+		this.box.addEventListener("touchend", removeScroll, false);
+		this.box.addEventListener("mouseup", removeScroll, false);
+		this.box.addEventListener("touchcancel", removeScroll, false);
+		this.box.addEventListener("mouseout", removeScroll, false);
+	}
+		var _imgPlayer =function (id) {
+			var that=this;
+			this.time=0;
+			this.box=document.getElementById(id);
+			this.index=0;
+			this.length=0;
+			this.width=this.box.offsetWidth;
+			this.height=this.box.offsetHeight;
+			this.contentWidth=0;
+			this.imgBox=null
+			this.buttonBox=null;
+			this.timeout=1000;
+			this.step=this.width/20;
+			this.scrolled=0;
+			this.settimeout=null;
+			this.left=0;
+			this.imgBoxLastChild=null;
+			this.animation=null;
+			this.actions = new animation();
+			this.startPoint=0;
+			this.endPoint=0;
+			this.cover=null;
+			this.init();
+			this.box.addEventListener("click",function(event){
+				goto.call(that,event)
+			},false);
+			this.box.addEventListener("touchstart",function(event){
+				bindScroll.call(that,event);
+			},false);
+			this.box.addEventListener("mousedown",function(event){
+				bindScroll.call(that,event);
+			},false);
+		}
+		_imgPlayer.prototype = {
+			baseStyle:{
+				box:"position:relative;width:100%;overflow:hidden;text-align:center;outline:none;-ms-user-select:none;-webkit-user-select:none",
+				imgBox:"position:absolute;left:0;font-size:0px;height:100%",
+				img:"",
+				buttonBox:"position:absolute;width:auto;margin:auto;left:0;right:0;bottom:20px;font-size:0px;display:inline-block",
+				button:"width:9px;height:9px;background:rgba(0,0,0,0);border-radius:5px;border:1px solid white;display:inline-block;margin:0 5px",
+			},
+			init:function(){
+				var html="<div style='"+this.baseStyle.imgBox+"'><a href=''><img src='' style=''></a></div>";
+				html+="<div style='"+this.baseStyle.buttonBox+"'></div>";
+				html+="<div style='width:100%;height:100%;position:absolute;display:none;z-index:999;left:0;top:0;outline:none;-ms-user-select:none;-webkit-user-select:none'></div>"
+				this.box.style.cssText=this.baseStyle.box;
+				this.box.innerHTML=html;
+				this.imgBox=this.box.children[0];
+				this.width=this.box.offsetWidth;
+				this.imgBoxLastChild=this.imgBox.children[0];
+				this.buttonBox=this.box.children[1];
+				this.cover=this.box.children[2];
+				this.length=1;
+				this.step=this.width/20;
+
+
+			},
+			set:function(attr){
+				for (o in attr){
+					this.box.style[o]=attr[o];
+				}
+				this.width=this.box.offsetWidth;
+				this.height=this.box.offsetHeight;
+				this.step=this.width/20;
+			},
+			addImg:function(src,imgsrc){
+				this.length++;
+				this.imgBox.removeChild(this.imgBox.children[0]);
+				this.imgBox.innerHTML+="<img target='"+src+"' src='"+imgsrc+"' style='width:"+this.width+"px;height:100%'>";
+				this.buttonBox.innerHTML+="<span style='"+this.baseStyle.button+"'></span>";
+				this.imgBox.style.width=this.length*this.width+"px";
+				this.imgBoxLastChild=this.imgBox.children[0].cloneNode(true);
+				this.imgBox.appendChild(this.imgBoxLastChild);
+				this.contentWidth=this.imgBox.offsetWidth;
+				this.buttonBox.children[0].style.background="white"
+				this.buttonBox.style.width=(this.length*21)+"px";
+			},
+			clear:function(){
+				this.imgBox.innerHTML="";
+				this.buttonBox.innerHTML="";
+
+			},
+			playOnce:function(){
+				var that=this;
+				if((this.left+this.step)<(this.index*this.width)){
+					this.left+=this.step;
+					this.animation=requestAnimationFrame(function(){
+						that.imgBox.style.left=-that.left+"px";
+						that.animation=requestAnimationFrame(function(){
+							that.playOnce()
+						})
+					});
+				}else if((this.left)>(this.index*this.width)){
+					this.left-=this.step;
+					this.animation=requestAnimationFrame(function(){
+						that.imgBox.style.left=-that.left+"px";
+						that.animation=requestAnimationFrame(function(){
+							that.playOnce()
+						})
+					});
+				}else{
+					this.left=this.index*this.width;
+					this.animation=requestAnimationFrame(function(){
+						that.imgBox.style.left=-that.left+"px";
+						for (var i=0,l=that.buttonBox.children.length;i<l;i++){
+							that.buttonBox.children[i].style.background="rgba(0,0,0,0)";
+						}
+						try{
+							that.buttonBox.children[that.index].style.background="white";
+						}catch(e){
+							this.index=1;
+							this.left=0;
+							that.buttonBox.children[0].style.background="white";
+
+						}
+						that.settimeout=setTimeout(function(){
+							that.play();
+						},that.timeout);
+
+				});
+				}
+
+				
+			},
+			play:function(){
+				var that=this;
+				if(this.index<this.length-1){
+					this.index++;
+				}else{
+					this.index=0;
+					this.left=0;
+				}
+				this.playOnce();
+			},
+			stop:function(){
+				clearTimeout(this.settimeout);
+				cancelAnimationFrame(this.animation);
+			}
+		};
+		 _imgPlayerManger=[]
+		window.imgPlayer=function (id) {
+			 _imgPlayerManger.push(new _imgPlayer(id));
+			this.player=_imgPlayerManger.length-1;
+		}
+		imgPlayer.prototype={
+			set:function(attrs){
+				_imgPlayerManger[this.player].set(attrs);
+			},
+			addImg:function(src,imgsrc){
+				if(src instanceof Array){
+					for(var i=0;i<src.length;i++);
+						_imgPlayerManger[this.player].addImg(src[i].src,src[i].imgsrc);
+				}else{
+					_imgPlayerManger[this.player].addImg(src,imgsrc);
+				}
+
+				
+			},
+			clear:function(){
+				_imgPlayerManger[this.player].clear();
+			},
+			play:function(){
+				_imgPlayerManger[this.player].play();
+			},
+			stop:function(){
+				_imgPlayerManger[this.player].stop();
+			}
+		}
+
+	})()
+		
+		var ip=new imgPlayer("lunbo");
+		ip.set({
+			width:"500px",
+			height:"200px"
+		})
+		ip.addImg("pic/1.jpg","pic/1.jpg");
+		ip.addImg("pic/1.jpg","pic/2.jpg");
+		ip.addImg("pic/1.jpg","pic/3.jpg");
+		ip.addImg("pic/1.jpg","pic/4.jpg");
+		ip.play();
+	</script></body>
+</html>

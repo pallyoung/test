@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>html5调用摄像头存储并拍照</title>
+</head>
+<body>
+	<video src="" style="left:30px;top:30px;position:absolute"></video>
+	<canvas height="400" width="400" style="display:none;left:30px;top:30px;position:absolute;z-index:999" ></canvas>
+	<input type="button" onclick="snapshot()" value="拍照">
+	<input type="button" onclick="show()" value="预览">
+	<input type="button" onclick="pre()" value="上一张">
+	<input type="button" onclick="next()" value="下一张">
+	<script>
+	  navigator.webkitGetUserMedia({video:true}, gotStream, noStream);
+  	var video = document.querySelector("video");
+ 	 var canvas = document.querySelector("canvas");
+  function gotStream(stream) {
+    video.src = URL.createObjectURL(stream);
+    video.play();
+  }
+  function noStream() {
+    console.log("failed");
+  }
+  function snapshot() {
+  	canvas.height=video.offsetHeight;
+    canvas.width=video.offsetWidth;    
+    canvas.style.display="block";
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    setTimeout(function(){
+    	canvas.style.display="none";
+    },5000);
+    var index=localStorage.picIndex||0;
+    localStorage.picIndex=Number(index)+1;
+    localStorage.setItem("pic"+localStorage.picIndex,canvas.toDataURL());
+  }
+  var indexNow=0;
+   function show() {
+   	var index=localStorage.picIndex||0;
+   	var img=null;
+   	if(index==0){
+   		alert("no pic,please take one first")
+   	}else{
+   		img=new Image();
+   		img.src=localStorage.getItem("pic"+localStorage.picIndex);
+   		canvas.getContext('2d').drawImage(img, 0, 0);
+   		canvas.style.display="inline";
+   		indexNow=localStorage.picIndex;
+
+   	}
+  }
+   function next() {
+   		var index=localStorage.picIndex||0;
+   		var img=null;
+   		if(index==0){
+   			alert("no pic,please take one first");
+   		}
+   		else{
+   			indexNow=Number(indexNow);
+   			indexNow++;
+   			if(indexNow>Number(localStorage.picIndex)){
+   				indexNow=1;
+   			}
+   			img=new Image();
+   			img.src=localStorage.getItem("pic"+indexNow);
+   			canvas.getContext('2d').drawImage(img, 0, 0);
+   			canvas.style.display="inline";
+   		}
+  }	
+   function pre() {
+   	var index=localStorage.picIndex||0;
+   		var img=null;
+   		if(index==0){
+   			alert("no pic,please take one first");
+   		}
+   		else{
+   			indexNow=Number(indexNow);
+   			indexNow--;
+   			if(indexNow<1){
+   				indexNow=Number(localStorage.picIndex);
+   			}
+   			img=new Image();
+   			img.src=localStorage.getItem("pic"+indexNow);
+   			canvas.getContext('2d').drawImage(img, 0, 0);
+   			canvas.style.display="inline";
+   		}
+  }
+ </script>
+</body>
+</html>

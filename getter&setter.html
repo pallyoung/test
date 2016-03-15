@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>属性getter和setter</title>
+</head>
+<body>
+	<div></div>
+	<script>
+		var Book=function(name){
+			this._name=name;
+		}
+		Book.prototype={
+			get name() {return "《"+this._name+"》";},
+			set name(name) {this._name=name;}
+		}
+		var div=document.body.children[0];
+		var book=new Book("钢铁是怎样炼成的");
+		div.innerHTML=book.name;
+		book.name="七日谈";
+		div.innerHTML+="changed to"+book.name;
+
+	</script>
+</body>
+</html>

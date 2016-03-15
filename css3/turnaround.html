@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>旋转</title>
+	<style>
+	body{
+		perspective:400px;
+		perspective-origin:200px 120px;
+	}
+	@-webkit-keyframes round{
+		0%{
+			transform:/*transform:rotate3d(2,1,4,0deg);*/rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+		}
+		100%{
+			transform:/*rotate3d(3,1,2,-360deg);*/rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+		}
+	}
+	.stage{
+		position: relative;
+		margin: 0;
+		width: 400px;
+		height: 400px;
+		/*perspective:18000px;
+		perspective-origin:200px 200px;*/
+		transform-style:preserve-3d;
+		/*transform:rotateY(-100deg);*/
+		border: none;
+		-webkit-animation:round 5s linear 0s infinite normal;
+		-webkit-animation-play-state:running;
+	}
+	.stage div:nth-child(1){
+		transform:translate3d(-50px,0,0) rotateY(90deg);
+		/*transform-origin:left 50%;*/
+		left:150px;
+		top:150px;
+		background-color: rgb(11,44,55);
+		 -webkit-border-radius: 12px;
+		/*-webkit-animation:round1 10s linear 0s infinite normal;
+		-webkit-animation-play-state:running;*/
+	}
+	.stage div:nth-child(2){
+		transform:translateZ(50px);
+		left:150px;
+		top:150px;
+		background-color: rgb(121,234,55);
+		 -webkit-border-radius: 12px;
+		/*-webkit-animation:round2 10s linear 0s infinite normal;
+		-webkit-animation-play-state:running;*/
+	}
+	.stage div:nth-child(3){
+		transform:translateX(50px) rotateY(90deg);
+		/*transform-origin:right 50%;*/
+		left:150px;
+		top:150px;
+		background-color: rgb(200,234,55);
+		 -webkit-border-radius: 12px;
+	/*	-webkit-animation:round3 10s linear 0s infinite normal;
+		-webkit-animation-play-state:running;*/
+	}
+	.stage div:nth-child(4){
+		transform:translateY(-50px) rotateX(90deg);
+		/*transform-origin:50% top;*/
+		left:150px;
+		top:150px;
+		background-color: rgb(200,234,155);
+		 -webkit-border-radius: 12px;
+		/*-webkit-animation:round4 10s linear 0s infinite normal;
+		-webkit-animation-play-state:running;*/
+	}
+	.stage div:nth-child(5){
+		transform:translateY(50px) rotateX(90deg);
+		/*transform-origin:50% bottom;*/
+		left:150px;
+		top:150px;
+		background-color: rgb(20,234,85);
+		 -webkit-border-radius: 12px;
+/*		-webkit-animation:round5 10s linear 0s infinite normal;
+		-webkit-animation-play-state:running;*/
+	}
+	.stage div:nth-child(6){
+		transform:translateZ(-50px);
+		left:150px;
+		top:150px;
+		background-color: rgb(20,24,85);
+		 -webkit-border-radius: 12px;
+	/*	-webkit-animation:round6 10s linear 0s infinite normal;
+		-webkit-animation-play-state:running;*/
+		
+	}
+	div{
+		width: 98px;
+		height: 98px;
+		border: 1px solid rgba(11,33,44,0.5);
+		position: absolute;
+	}
+	</style>
+</head>
+<body>
+<div class="stage">
+	<div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
+    
+	<canvas width="400" height="400"></canvas>
+	<script>
+	var context=document.getElementsByTagName('canvas')[0].getContext("2d");
+	context.fillStyle="rgba(11,33,44,0.5)";
+	context.storkeStyle="rgba(11,33,44,0.5)";
+
+	</script>
+</body>
+</html>

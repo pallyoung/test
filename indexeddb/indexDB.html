@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test indexDB</title>
+</head>
+<body>
+	<script>
+		var indexedDB = window.indexedDB || window.msIndexedDB || window.mozIndexedDB ||window.webkitIndexedDB;
+
+		var request, database;
+		var user = {
+ 			username: "007",
+ 			firstName: "James",
+ 			lastName: "Bond",
+ 			password: "foo"
+		};
+		request = indexedDB.open("admin");
+		request.onerror = function(event){
+ 			alert("Something bad happened while trying to open: " +
+ 			event.target.errorCode);
+		};
+		request.onupgradeneeded = function() {
+  			// The database did not previously exist, so create object stores and indexes.
+ 			database = request.result;
+  			var store = database.createObjectStore("books", {keyPath: "isbn"});
+  			var titleIndex = store.createIndex("by_title", "title", {unique: true});
+  			var authorIndex = store.createIndex("by_author", "author");
+  			
+  			// Populate with initial data.
+  			store.put({title: "Quarry Memories", author: "Fred", isbn: 123456});
+  			store.put({title: "Water Buffaloes", author: "Fred", isbn: 234567});
+ 			store.put({title: "Bedrock Nights", author: "Barney", isbn: 345678});
+ 			store.put({title: "Hello indexedDB", author: "Ye", isbn: 2345678});
+ 			
+		};
+			
+		request.onsuccess = function(event){
+ 			database = event.target.result;
+ 			var tx = database.transaction("books", "readonly");
+ 			var store = tx.objectStore("books");
+			var index = store.index("by_title");
+			var request = index.get("Bedrock Nights");
+ 			request.onerror = function(event){
+ 				alert("Did not get the object!");
+			};
+			request.onsuccess = function(event){
+ 				var result = event.target.result;
+ 				alert(result.title); //"James"
+ 				database.close();
+			};	
+ 		}
+
+	</script>
+</body>
+</html>

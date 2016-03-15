@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>测试手机旋转后屏幕宽高属性</title>
+	<script>
+		window.ondeviceorientation=function () {
+			document.body.innerHTML= "Current orientation is " + window.orientation;
+			document.body.innerHTML+="<br/>网页可见区域宽：document.body.clientWidth"+document.body.clientWidth;//旋转不变
+			document.body.innerHTML+="<br/>网页可见区域高：document.body.clientHeight"+document.body.clientHeight;//旋转不变
+			document.body.innerHTML+="<br/>网页可见区域宽：document.body.offsetWidth (包括边线的宽)"+document.body.offsetWidth;//旋转不变
+			document.body.innerHTML+="<br/>网页可见区域高：document.body.offsetHeight (包括边线的宽)"+document.body.offsetHeight;//旋转不变
+			document.body.innerHTML+="<br/>网页正文全文宽：document.body.scrollWidth"+document.body.scrollWidth;//旋转不变
+			document.body.innerHTML+="<br/>网页正文全文高：document.body.scrollHeight"+document.body.scrollHeight;//旋转不变
+			document.body.innerHTML+="<br/>网页被卷去的高：document.body.scrollTop"+document.body.scrollTop;//旋转不变
+			document.body.innerHTML+="<br/>网页被卷去的左：document.body.scrollLeft"+document.body.scrollLeft;//旋转不变
+			document.body.innerHTML+="<br/>网页正文部分上：window.screenTop"+window.screenTop;//旋转不变
+			document.body.innerHTML+="<br/>网页正文部分左：window.screenLeft"+window.screenLeft;//旋转不变
+			document.body.innerHTML+="<br/>屏幕分辨率的高：window.screen.height"+window.screen.height;
+			document.body.innerHTML+="<br/>屏幕分辨率的宽：window.screen.width"+window.screen.width;
+			document.body.innerHTML+="<br/>屏幕可用工作区高度：window.screen.availHeight"+window.screen.availHeight;
+			document.body.innerHTML+="<br/>屏幕可用工作区宽度：window.screen.availWidth"+window.screen.availWidth;
+		}
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

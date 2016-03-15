@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>display</title>
+	<style>
+	.runin{ display:run-in}
+	h1{display:run-in
+
+		}
+		p{width: 100px;
+			height: 100px;
+
+			}</style>
+</head>
+<body>
+<h1 class="runin">But why not make it an inline element? </h1>	
+	<div>Because the following text might be (actually, is likely to be) inside of a paragraph tag. Paragraph tags are block-level, and thus the will break to a new line if they follow an inline element and the effect will not be achieved. You could insert the h3 tag within the p tag, but that has semantic concerns, and more importantly, long term maintenance concerns. What if this effect goes out of vogue?</div>
+	
+	<div><p>But why not use inline-block? </p>Same problem as above. The effect will not be achieved unless you tuck the header into the following paragraph which is problematic.</div>
+	<div></div>
+	<div style="width:1000px;height:500px;background:rgb(11,222,33);position:relative;top:200px;left:0px;z-index:-1"><p style="position:fixed;background:black;top:0px;left:0px">
+	<p></p>
+	</p></div>
+	<div  style="width:1000px;height:100px;background:rgb(113,22,33);position:relative;z-index:99"></div>
+	
+</body>
+</html>

@@ -1,0 +1,209 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charest="utf-8"/>
+	<title>左侧弹出式菜单</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css"></head>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script type="text/javascript">
+	var eventOut=null;
+	var events=null
+    menuMouseover=function(e){
+    	if(eventOut!==null){
+    	window.clearTimeout(eventOut);
+    	contentNone(events);
+    }
+		var element=fan6(e.srcElement.parentNode);
+		var content=fan6(".subMenu");
+		element.styleAdd("background-color","rgb(136,118,110)");
+		element.styleAdd("color","rgb(255,255,255)");
+		element.styleAdd("height","80px");
+		content.styleAdd("width","780px");
+		for(var i=0;i<element.box[0].parentNode.children.length;i++){
+			if(fan6(".subMenu ul li").box[i].style.display==="block"){
+				fan6(".subMenu ul li").box[i].style.display="none";
+			};
+	    	if(element.box[0]===element.box[0].parentNode.children[i]){
+	    		fan6(".subMenu ul li").box[i].style.display="block";
+	    	}
+	    }
+        
+	}
+	menuMouseout=function(e){
+		events=e.srcElement;
+		eventOut=setTimeout("contentNone(events)",10);
+				
+	}
+	contentMouseover=function(e){
+		window.clearTimeout(eventOut);
+	}
+	contentMouseout=function(e){
+		eventOut=setTimeout("contentNone(events)",10);
+	}
+	contentNone=function(e){
+		var element=fan6(e.parentNode);
+	    var content=fan6(".subMenu");
+		element.styleRemove("background-color");
+		element.styleRemove("color");
+		element.styleRemove("height");
+		content.styleRemove("width");
+	}
+	window.onload=function() {
+		var menu=fan6(".menu ul");
+		var content=fan6(".subMenu");
+		menu.eventAdd("mouseover",menuMouseover);
+		menu.eventAdd("mouseout",menuMouseout);
+		content.eventAdd("mouseover",contentMouseover);
+		content.eventAdd("mouseout",contentMouseout);
+	}
+	</script>
+<body>
+	<div>
+		<div class="menu">
+			<h1>所有商品分类</h1>
+			<ul>
+				<li>
+					<h3>国际品牌</h3>
+					<p>
+						优衣库 飞利浦 NB 阿迪达斯 Gap
+Levi’s 双立人 诺优能 微软 ELLE
+					</p>
+				</li>
+				<li class="odd">
+					<h3>服装/内衣/配件</h3>
+					<p>
+						女装 男装 内衣 羽绒 裙子 呢大衣
+棉衣 毛衣 牛仔 裤子 睡衣 保暖衣
+					</p>
+				</li>
+				<li>
+					<h3>鞋/箱包</h3>
+					<p>
+						女鞋 男鞋 靴子 雪地靴 休闲鞋
+女包 男包 旅行箱 真皮包 欧美包
+					</p>
+				</li>
+				<li class="odd">
+					<h3>珠宝饰品/手表眼镜</h3>
+					<p>
+						珠宝 手表 饰品 太阳镜 ZIPPO
+钻石 珍珠 黄金 项链 手镯
+					</p>
+				</li>
+				<li>
+					<h3>化妆品/个人护理</h3>
+					<p>
+						护肤 彩妆 洗护 护肤套装 面膜
+乳液面霜 洁面 化妆水 洗发 卫生巾
+					</p>
+				</li>
+				<li class="odd">
+					<h3>运动户外</h3>
+					<p>
+						运动鞋 运动服 户外 健身 运动包
+跑步鞋 板鞋 登山鞋 冲锋衣
+					</p>
+				</li>
+				<li>
+					<h3>手机数码</h3>
+					<p>
+						手机 相机 笔记本 平板 硬件
+配件 办公 鼠键套装 移动电源 文具
+					</p>
+				</li>
+				<li class="odd">
+					<h3>家用电器</h3>
+					<p>
+						大家电 影音 厨房 电视 耳机
+个人护理 生活电器 空净 饭煲 净水
+					</p>
+				</li>
+				<li>
+					<h3>家具建材</h3>
+					<p>
+						灯具 卫浴 涂料 吸顶灯 台灯
+沙发 柜子 床 柜类 沙发
+					</p>
+				</li>
+				<li class="odd">
+					<h3>家纺/居家</h3>
+					<p>
+						四件套 枕头 冬被 十字绣 沙发垫
+厨房餐具 拖把 收纳 宠物 居家日用
+					</p>
+				</li>
+				<li>
+					<h3>母婴玩具</h3>
+					<p>
+						奶粉辅食 用品 孕妈 童装 儿童玩具
+大人玩乐 裤子 运动鞋 套装 内衣裤
+					</p>
+				</li>
+				<li class="odd">
+					<h3>食品</h3>
+					<p>
+						零食 粮油 生鲜 坚果 冲饮
+酒水 白酒 葡萄酒 巧克力 进口
+					</p>
+				</li>
+				<li>
+					<h3>医药保健</h3>
+					<p>
+						保健 滋补 养生 食疗 提高免疫
+药品 血压 计生 美瞳 体检
+					</p>
+				</li>
+				<li class="odd">
+					<h3>全新整车/汽车配件</h3>
+					<p>
+						汽车 新车必备 坐垫 记录仪 保养
+DVD导航 清洗 改装 摩托车
+					</p>
+				</li>
+				<li>
+					<h3>图书音像</h3>
+					<p>
+						考试 童书 小说 期刊杂志 社会科学
+艺术 外语 医学卫生 工业技术 管理
+					</p>
+				</li>
+				<li class="odd">
+					<h3>旅行/文娱/卡券</h3>
+					<p>
+						天猫点券卡 旅游度假 乐器 签证
+景点门票 酒店 客栈
+					</p>
+				</li>
+				<li>
+					<h3>充值/合约机/通信</h3>
+					<p>
+						话费充值中心 合约购机 选号入网
+3G上网卡 有线宽带 老用户预存优惠
+					</p>
+				</li>
+			</ul>
+		</div>
+		<div class="subMenu">
+			<ul>
+				<li>国际品牌</li>
+				<li>服装/内衣/配件</li>
+				<li>鞋/箱包</li>
+				<li>珠宝饰品/手表眼镜</li>
+				<li>化妆品/个人护理</li>
+				<li>运动户外</li>
+				<li>手机数码</li>
+				<li>家用电器</li>
+				<li>家具建材</li>
+				<li>家纺/居家</li>
+				<li>母婴玩具</li>
+				<li>食品</li>
+				<li>医药保健</li>
+				<li>全新整车/汽车配件</li>
+				<li>图书音像</li>
+				<li>旅行/文娱/卡券</li>
+				<li>充值/合约机/通信</li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

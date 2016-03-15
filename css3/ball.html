@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CSS3 制作3D旋转球体</title>
+<meta name="description" content="CSS3 制作3D旋转球体" />
+<meta name="keywords" content="CSS3,CSS3旋转,CSS3动画,CSS3D,transform,3D,keyframes,蓝色梦想,bluesdream,梦幻神化" />
+<style>
+* {
+	margin:0; padding:0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+	/*
+		语法结构&说明：
+		box-sizing：content-box | border-box
+		content-box：此属性表现为标准模式下的盒模型（当我们设置元素的width和height时，它的宽度不包括border和padding。例：width:100px; border-width:10px; 元素实际宽度为220px;）
+		border-box：此属性表现为怪异模式下的盒模型（和content-box相反，它的宽度包含border和padding。例：width:100px; border-width:10px; 此时的border相当于内边距，元素实际宽度仍为200px;）
+	*/
+}
+body {
+	background:black;
+}
+.wrap {
+	margin: 150px auto;
+	position: relative;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.wrap, .x, .y, .z {
+	width: 200px;
+	height: 200px;
+	border-radius: 50%;
+}
+.x1, .x2, .y, .y1, .y2, .z, .z1, .z2 , .xInner , .yInner , .zInner {
+	position: absolute;
+}
+.x1,.x2,.y1,.y2,.z1,.z2 {
+	width: 87.5%;
+	height: 87.5%;
+	border-radius: 50%;
+}
+.x {
+	position: relative;
+	border: 1px solid #FF0099;
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-animation: mymove 10s linear infinite;
+	-moz-animation: mymove 10s linear infinite;
+	-ms-animation: mymove 10s linear infinite;
+	animation: mymove 10s linear infinite;
+}
+.y {
+	top: 0; left: 0;
+	border: 2px solid #0099FF;
+	-webkit-transform: rotateX(90deg);
+	-moz-transform: rotateX(90deg);
+	-ms-transform: rotateX(90deg);
+	transform: rotateX(90deg);
+}
+.z {
+	top: 0; left: 0;
+	border: 1px solid #FFCC33;
+	-webkit-transform: rotateY(90deg);
+	-moz-transform: rotateY(90deg);
+	-ms-transform: rotateY(90deg);
+	transform: rotateY(90deg);
+}
+.x1 {
+	top: 6.25%; left: 6.25%;
+	border: 1px solid #FF0099;
+	-webkit-transform: translateZ(50px);
+	-moz-transform: translateZ(50px);
+	-ms-transform: translateZ(50px);
+	transform: translateZ(50px);
+}
+.x2 {
+	top: 6.25%; left: 6.25%;
+	border: 1px solid #FF0099;
+	-webkit-transform: rotateX(180deg) translateZ(50px);
+	-moz-transform: rotateX(180deg) translateZ(50px);
+	-ms-transform: rotateX(180deg) translateZ(50px);
+	transform: rotateX(180deg) translateZ(50px);
+}
+.y1 {
+	top: 6.25%; left: 6.25%;
+	border: 1px solid #0099FF;
+	-webkit-transform: rotateX(90deg) translateZ(50px);
+	-moz-transform: rotateX(90deg) translateZ(50px);
+	-ms-transform: rotateX(90deg) translateZ(50px);
+	transform: rotateX(90deg) translateZ(50px);
+}
+.y2 {
+	top: 6.25%; left: 6.25%;
+	border: 1px solid #0099FF;
+	-webkit-transform: rotateX(270deg) translateZ(50px);
+	-moz-transform: rotateX(270deg) translateZ(50px);
+	-ms-transform: rotateX(270deg) translateZ(50px);
+	transform: rotateX(270deg) translateZ(50px);
+}
+.z1 {
+	top: 6.25%; left: 6.25%;
+	border: 1px solid #FFCC33;
+	-webkit-transform: rotateY(90deg) translateZ(50px);
+	-moz-transform: rotateY(90deg) translateZ(50px);
+	-ms-transform: rotateY(90deg) translateZ(50px);
+	transform: rotateY(90deg) translateZ(50px);
+}
+.z2 {
+	top: 6.25%; left: 6.25%;
+	border: 1px solid #FFCC33;
+	-webkit-transform: rotateY(270deg) translateZ(50px);
+	-moz-transform: rotateY(270deg) translateZ(50px);
+	-ms-transform: rotateY(270deg) translateZ(50px);
+	transform: rotateY(270deg) translateZ(50px);
+}
+.xInner {
+	border: 1px solid #FF0099;
+	width: 100%;
+	top: 50%;
+}
+.yInner {
+	height: 100%;
+	left: 50%;
+	border: 1px solid #0099FF;
+	-webkit-transform: rotateX(90deg);
+	-moz-transform: rotateX(90deg);
+	-ms-transform: rotateX(90deg);
+	transform: rotateX(90deg);
+}
+.zInner {
+	height: 100%;
+	left: 50%;
+	border: 1px solid #FFCC33;
+	-webkit-transform: rotateY(90deg);
+	-moz-transform: rotateY(90deg);
+	-ms-transform: rotateY(90deg);
+	transform: rotateY(90deg);
+}
+
+@-webkit-keyframes mymove
+{
+	100% { -webkit-transform:  rotateX(360deg) rotateY(180deg) }
+}
+@-moz-keyframes mymove
+{
+	100% { -moz-transform:  rotateX(360deg) rotateY(360deg) }
+}
+@-ms-keyframes mymove
+{
+	100% { -ms-transform:  rotateX(360deg) rotateY(360deg) }
+}
+@keyframes mymove
+{
+	100% { transform:  rotateX(360deg) rotateY(360deg) }
+}
+
+#info{ text-align:center; font-family:"Microsoft YaHei"; line-height:24px; color:#555; border-top:1px #222 solid; padding:25px 0;}
+#info .title{ font-size:20px;}
+#info .author{ font-size:14px;}
+#info a{ text-decoration:none; color:#555;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+	<div class="inner"></div>
+	<div class="x">
+		<div class="x1"></div>
+		<div class="x2"></div>
+		<div class="xInner"></div>
+		<div class="y"></div>
+		<div class="y1"></div>
+		<div class="y2"></div>
+		<div class="yInner"></div>
+		<div class="z"></div>
+		<div class="z1"></div>
+		<div class="z2"></div>
+		<div class="zInner"></div>
+	</div>
+</div>
+
+<div id="info">
+	<p class="title">CSS3 制作3D旋转球体</p>
+	<p class="author">By www.bluesdream.com <script src="http://s9.cnzz.com/stat.php?id=1734797&web_id=1734797" language="JavaScript"></script></p>
+</div>
+
+</body>
+</html>

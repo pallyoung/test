@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=200,user-scalable=no"></meta>
+	<title>列表滚动</title>
+	<style>
+	*{
+		margin:0;
+		padding: 0;
+	}
+	.node{
+		width:400px;
+		height:200px;
+	}
+	.title{
+		height: 40px;
+		width: 80px;
+	}
+	.row{
+	}
+	.col{
+	}
+	.content{
+		height: 400px;
+		width: 800px;
+	}
+	
+	</style>
+</head>
+<body>
+	<div id="move">
+		
+	</div>
+	<script>
+	(function(){var eventType = {
+		touch: ["touchmove", "touchstart", "touchend", "touchcancel"],
+		mouse: ["mousemove", "mousedown", "mouseup", "mouseout"],
+	}
+	var createFrame=function(){
+
+	}
+	var getDirection = function(p0, p1) {
+		if (Math.abs(p1.x - p0.x) > Math.abs(p1.y - p0.y)) {
+			return "x";
+		} else if (Math.abs(p1.x - p0.x) <= Math.abs(p1.y - p0.y)) {
+			return "y";
+		}
+
+	}
+	var getMoveTarget=function(direction){
+		if(direction=="x"){
+			return this.col;
+		}else{
+			return this.row;
+		}
+	}
+	var getPoint = function(event) {
+		if( document.hasOwnProperty("ontouchstart")){
+			return {
+				x: event.touches[0].pageX,
+				y: event.touches[0].pageY
+			}
+
+		}else{
+			return {
+			x: event.pageX,
+			y: event.pageY
+		}
+		}
+	}
+
+	var animation = function() {
+		this.timeout = null;
+		this.clear=null;
+	}
+	animation.prototype = {
+		dos :function(callBack, timeout) {
+			var that = this,
+				fun = function() {
+					try{
+						callBack();
+					}
+					catch(e){
+
+					}					
+					that.timeout = null;
+				};
+				if (timeout) {
+					this.timeout = setTimeout(fun, timeout);
+					this.clear=function(){
+						clearTimeout(this.timeout);
+						this.timeout=null;
+					}
+				} else {
+					this.timeout = requestAnimationFrame(fun);
+					this.clear=function(){
+						cancelAnimationFrame(this.timeout);
+						this.timeout=null;
+					}
+				}
+
+
+		}
+	}
+	var moveObj=function(opt){
+		if(!(
+			opt       	&&
+			opt.node  	&&
+			opt.title 	&&
+			opt.col   	&&
+			opt.row   	&&
+			opt.content
+			)
+		){
+			throw new Error("参数错误");
+		}
+		var that = this;
+		this.animation = new animation();
+		this.node =opt.node;
+		this.title=opt.title;
+		this.row=opt.row;
+		this.col=opt.col;
+		this.content=opt.content;
+		this.style=null;
+		this.styleClass=null;
+		if(opt.style){
+			this.style=opt.style;
+		}
+		if(opt.styleClass){
+			this.styleClass=opt.styleClass;
+		}
+		this.direction = null;
+		this.startPoint = null;
+		this.endPoint = null;
+		this.step = 0;
+		this.frameStyle={};
+		this.tdStyle={};
+		this.titleStyle={};
+		this.colStyle={};
+		this.rowStyle={};
+		this.ooy=0;
+		this.oox=0;
+		this.type = document.hasOwnProperty("ontouchstart") ? eventType.touch : eventType.mouse;
+		this.moveTarget=null;
+		this.node.addEventListener(this.type[1], function(event) {
+			bindScroll.call(that, event)
+		}, false);
+		this.createFrame();
+		this.createTitle();
+		this.createContent();
+		this.createCol();
+		this.createRow();
+		this.createCover();
+		this.title=this.node.children[0];
+		this.content=this.node.children[1];
+		this.row=this.node.children[3];
+		this.col=this.node.children[2];
+		this.cover=this.node.children[4];
+		this.node.style.height=this.node.offsetHeight+"px";
+		this.node.style.width=this.node.offsetWidth+"px";
+		this.content.style.height=this.content.offsetHeight+"px";
+		this.content.style.width=this.content.offsetWidth+"px";
+		if(getComputedStyle(this.title).backgroundColor==="transparent"||
+			getComputedStyle(this.title).backgroundColor==="rgba(0, 0, 0, 0)"){
+			this.title.style.backgroundColor="white";
+		}
+		if(getComputedStyle(this.col).backgroundColor==="transparent"||
+			getComputedStyle(this.col).backgroundColor==="rgba(0, 0, 0, 0)"){
+			this.col.style.backgroundColor="white";
+		}
+		if(getComputedStyle(this.row).backgroundColor==="transparent"||
+			getComputedStyle(this.row).backgroundColor==="rgba(0, 0, 0, 0)"){
+			this.row.style.backgroundColor="white";
+		}
+
+	
+	}
+	moveObj.prototype={
+		spiltStyle:function(){
+			this.frameStyle={};
+			this.tdStyle={};
+			this.titleStyle={};
+			this.colStyle={};
+			this.rowStyle={};
+			var tdreg=/^td-/;
+			var ttreg=/^title-/;
+			for (var s in this.style) {
+				if(tdreg.test(s)){
+					this.tdStyle[s.replace(tdreg,"")]=this.style[s];
+				}else if(ttreg.test(s)){
+					this.titleStyle[s.replace(ttreg,"")]=this.style[s];
+				}else{
+					this.frameStyle[s]=this.style[s];
+				}
+			};
+		},
+		createFrame:function(){
+			this.node.className+=this.styleClass.node;
+			this.node.style.overflow="hidden";
+			this.node.innerHTML="";
+			var computedStyle=getComputedStyle(this.node);
+			if(computedStyle.position==="static"){
+				this.node.style.position="relative";
+			}
+		},
+		createTitle:function(){
+			var title="<span class='"+this.styleClass.title  	+
+					"' style='"                      			+
+					"top:0;left:0;display:inline-block;position:absolute;z-index:5;vertical-align: middle;'>"			+
+					this.title                        			+
+					"</span>";
+			this.node.innerHTML+=title;
+			this.ooy=this.node.children[0].offsetHeight;
+			this.oox=this.node.children[0].offsetWidth;
+		},
+		createTd:function(text,width,height){
+			var td="<span class='"					  		+
+					"' style='vertical-align: middle;display:inline-block;font-size:inherit;"   	+
+					"width:"+width+"px;height:"+height+"px;"+
+					"'>"									+
+					text                       				+
+					"</span>";
+			return td;
+		},
+		createCol:function(){
+			var col="<div class='"							+
+					this.styleClass.col						+	
+					"' style='z-index:4;" 					+
+					"top:0;position:absolute;left:"			+
+					this.oox+"px;height:"					+
+					this.ooy+"px;width:"					+
+					(this.node.children[1].offsetWidth)		+
+					"px;'>";
+			var content=this.node.children[1];
+			var width=Math.floor(content.offsetWidth/this.content[0]["length"]);
+			var height=this.ooy;		
+			for(var i=0;i<this.col.length;i++){
+				col+=this.createTd(this.col[i],width,height);
+			}
+			col+="</div>";
+			this.node.innerHTML+=col;
+				
+
+		},
+		createRow:function(){
+			var row="<div class='"						+
+					this.styleClass.row					+	
+					"' style='z-index:4;" 				+
+					"left:0;position:absolute;top:"		+
+					this.ooy+"px;width:"				+
+					this.oox+"px;height:"				+
+					(this.node.children[1].offsetHeight)+
+					"px;'>";
+			var content=this.node.children[1];
+			var width=this.oox;
+			var height=Math.floor(content.offsetHeight/this.content["length"]);		
+			for(var i=0;i<this.row.length;i++){
+				row+=this.createTd(this.row[i],width,height);
+			}
+			row+="</div>";
+			this.node.innerHTML+=row;
+
+		},
+		createContent:function(){
+			var content="<div class='"					+
+					this.styleClass.content 			+	
+					"' style='z-index:3;left:" 			+
+					this.oox+"px;position:absolute;top:"+
+					this.ooy+"px;'>";
+			content+="</div>"
+			this.node.innerHTML+=content;
+			content=this.node.children[1];
+			var width=Math.floor(content.offsetWidth/this.content[0]["length"]);
+			var height=Math.floor(content.offsetHeight/this.content["length"]);
+			for(var i=0;i<this.content.length;i++){
+				for(var j=0;j<this.content[i].length;j++){
+					content.innerHTML+=this.createTd(this.content[i][j],width,height);
+				}
+			}
+			
+			
+
+		},
+		createCover:function(){
+			var cover="<div style='width:"+this.node.offsetWidth+"px;height:"+
+			this.node.offsetHeight+"px;position:absolute;top:0;left:0;z-index:6;cursor:pointer;opacity:0;'></div>"
+			this.node.innerHTML+=cover;
+		}
+
+
+	}
+	var bindScroll = function(event) {
+		var that = this;
+		var scrolling = function(event) {
+			event.stopPropagation();
+			event.preventDefault();
+			if (that.animation.timeout == null) {
+				if (that.direction !== null) {
+					that.animation.dos(function() {
+						that.startPoint = that.endPoint;
+						that.endPoint = getPoint(event);
+						that.step = -that.endPoint[that.direction] + that.startPoint[that.direction];
+						doScroll.call(that);
+					});
+				} else {
+					that.animation.dos(function() {
+						that.endPoint = getPoint(event);
+						that.direction = getDirection(that.endPoint, that.startPoint);
+						that.moveTarget=getMoveTarget.call(that,that.direction);
+					}, 30);
+				}
+
+			}
+		}
+		var whEnd=function(style,tl,wh,oo){
+			if(parseFloat(this.content.style[wh])-this.step-parseFloat(this.node.style[wh])<=Math.abs(parseFloat(style[tl]))){
+				return "e";
+			}else if(parseFloat(style[tl])-this.step>=oo){
+				return "s";
+			}else{
+				return "m";
+			}
+		
+		}
+		var doScroll = function() {
+
+			var tl = "left";
+			var wh="width";
+			var oo=this.oox;
+			var destination = this.step;
+			var style=this.moveTarget.style;
+			var station="";
+			if (this.direction == "y") {
+				tl = "top";
+				wh="height";
+				oo=this.ooy;
+			}
+			try {
+				station=whEnd.call(this,style,tl,wh,oo);
+				if(station=="s"){
+					style[tl]=(oo)+"px";
+					this.content.style[tl]=(oo)+"px";					
+				}else if(station=="e"){
+					style[tl]=(-parseFloat(this.content.style[wh]+oo)+parseFloat(this.node.style[wh]))+"px";
+					this.content.style[tl]=style[tl];
+				}else{
+					style[tl]=(parseFloat(style[tl])-this.step)+"px";
+					this.content.style[tl]=style[tl];
+				}
+				
+			} catch (e) {
+				console.log(e);
+			}
+
+		}
+
+		var removeScroll = function(event) {
+			that.startPoint = null;
+			that.endPoint = null;
+			that.direction=null;
+			that.node.removeEventListener(that.type[0], scrolling, false);
+			that.node.removeEventListener(that.type[2], removeScroll, false);
+			that.node.removeEventListener(that.type[3], removeScroll, false);
+			
+		}
+		this.startPoint = getPoint(event);
+		this.node.addEventListener(this.type[0], scrolling, false);
+		this.node.addEventListener(this.type[2], removeScroll, false);
+		this.node.addEventListener(this.type[3], removeScroll, false);
+	}
+	var moveTable=function(opt){
+		this.table=new moveObj(opt);
+	}
+	window.createMoveTable=function(opt){
+		return new moveTable(opt);
+	}
+})()
+	
+	var opt={
+		node:document.getElementById("move"),//要放置内容的元素,element类型
+		title:"标题",//第一格标题内容
+		col:["标题0","标题1","标题2","标题3","标题4","标题5","标题6","标题7","标题8","标题9"],//第一行标题
+		row:["标题A","标题B","标题C","标题D","标题E","标题F","标题G","标题H","标题I","标题J"],//第一列标题
+		content:[//每一行元素是一个数组
+			["标题A0","标题A1","标题A2","标题A3","标题A4","标题A5","标题A6","标题A7","标题A8","标题A9"],
+			["标题B0","标题B1","标题B2","标题B3","标题B4","标题B5","标题B6","标题B7","标题B8","标题B9"],
+			["标题C0","标题C1","标题C2","标题C3","标题C4","标题C5","标题C6","标题C7","标题C8","标题C9"],
+			["标题D0","标题D1","标题D2","标题D3","标题D4","标题D5","标题D6","标题D7","标题D8","标题D9"],
+			["标题E0","标题E1","标题E2","标题E3","标题E4","标题E5","标题E6","标题E7","标题E8","标题E9"],
+			["标题F0","标题F1","标题F2","标题F3","标题F4","标题F5","标题F6","标题F7","标题F8","标题F9"],
+			["标题G0","标题G1","标题G2","标题G3","标题G4","标题G5","标题G6","标题G7","标题G8","标题G9"],
+			["标题H0","标题H1","标题H2","标题H3","标题H4","标题H5","标题H6","标题H7","标题H8","标题H9"],
+			["标题I0","标题I1","标题I2","标题I3","标题I4","标题I5","标题I6","标题I7","标题I8","标题I9"],
+			["标题J0","标题J1","标题J2","标题J3","标题J4","标题J5","标题J6","标题J7","标题J8","标题J9"]
+		],
+		styleClass:{
+			node:"node",//宽高必须指定
+			title:"title",//宽高必须指定
+			col:"col",//可有可无
+			row:"row",//可有可无
+			content:"content"//宽高必须指定
+		}
+	}
+	var moveobj=createMoveTable(opt);
+
+	</script>
+</body>
+</html>

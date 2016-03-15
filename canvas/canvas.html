@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas</title>
+</head>
+<body>
+	<div id="draw" style="width:600px;position:realitive">
+		<div id="toolBox"></div>
+		<canvas width="600" height="600" id="canvas1"></canvas>
+		<div id="color" ></div>
+	</div>
+
+	
+	<script>
+		var canvas=document.getElementById("canvas1");
+		var canvasContent=canvas.getContext("2d");
+		canvasContent.moveTo(0,0);
+		canvasContent.lineTo(100,100);
+		canvasContent.lineTo(100,200);
+		canvasContent.fill();
+		canvasContent.strokeStyle="rgb(222,133,144)";
+		canvasContent.stroke();
+		canvasContent.save();
+		canvasContent.fillStyle="rgba(222,133,144,0.5)";
+		canvasContent.fillRect(0,0,100,100);
+		canvasContent.fillText("你好",10,50);
+		canvasContent.font="20px Georgia";
+		canvasContent.strokeStyle="rgb(22,153,124)";
+		canvasContent.strokeText("Hello World!!",100,50);
+		canvasContent.fillStyle="rgba(212,123,144,1)";
+		canvasContent.fillText("Hello World!!",100,50);
+		canvasContent.rotate(Math.PI/2);
+		canvasContent.restore();
+
+		var drawing=function (event) {
+			if(event.button!==0){
+				return;
+			}
+			canvasContent.lineTo(event.clientX,event.clientY);
+		canvasContent.stroke();// body...
+	}
+	canvas.addEventListener("mousedown",function (argument) {
+		canvasContent.beginPath();
+		canvasContent.moveTo(event.clientX,event.clientY);
+		canvas.addEventListener("mousemove",drawing,false);
+		// body...
+	},false)
+	canvas.addEventListener("mouseup",function (argument) {
+		canvasContent.closePath();
+		canvas.removeEventListener("mousemove",drawing,false);
+		// body...
+	},false)
+	var random=function (min,max,isInt) {
+		var i=Math.random()*(max-min+1)+min;
+		if(isInt){
+			return Math.floor(i);
+		}else{
+			return i;
+		}
+
+
+	}	
+
+	var colorBox=document.getElementById("color");
+	var setColor=function (argument) {
+		var style=document.createElement("style");
+		var spans=null;
+		style.innerHTML="#color span{display:inline-block;width:20px;height:20px;}";
+		document.head.appendChild(style);
+		style=null;
+		for(var i=0;i<60;i++){
+			spans=document.createElement("span");
+			spans.style.backgroundColor="rgb("+random(0,255,true)+","+random(0,255,true)+","+random(0,255,true)+")";
+			colorBox.appendChild(spans);
+
+		}
+		spans=null;
+	}
+	setColor();
+	colorBox.addEventListener("click",function (event) {
+		canvasContent.strokeStyle=event.target.style.backgroundColor;
+	});
+</script>
+
+</body>
+</html>

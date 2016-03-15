@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Server-Sent 事件 - 单向消息传递</title>
+</head>
+<body>
+	<script>
+	var source=new EventSource("http://localhost:3000/common/getTime");
+		source.onmessage=function(event)
+  		{
+ 		 	document.body.innerHTML+=event.data + "<br />";
+  		};
+</script>
+</body>
+</html>

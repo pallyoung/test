@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>html5拖放和文件读取api</title>
+	<style>
+	#droptarget{
+		width: 300px;
+		height: 300px;
+		border: 1px solid rgb(132,45,66);
+	}
+	</style>
+</head>
+<body>
+	<div id="droptarget"></div>
+	<script>
+	var droptarget=document.getElementById('droptarget');
+	var readfile=function (files) {
+		var reader=new FileReader();
+		var data="";
+		var type="default";
+		if(files[0].type=="text/plain"){
+			data=reader.readAsText(files[0]);
+			type="text";
+		}else if(/image/.test(files[0].type)){
+			data=reader.readAsDataURL(files[0]);
+			type="image";
+		}else{
+			//data=reader.readAsDataURL(files[0]);
+			droptarget.innerHTML="name:"+files[0].name+"<br>type:"+files[0].type+"<br>size:"+files[0].size;
+		}
+		reader.onerror = function(){
+ 			droptarget.innerHTML = "Could not read file, error code is " +	reader.error.code;
+		 };
+ 		reader.onprogress = function(event){
+ 			if (event.lengthComputable){
+ 				console.log( event.loaded + "/" + event.total);
+			 }
+ 		};
+ 		reader.onload = function(){
+ 			var html = "";
+ 				switch(type){
+ 				case "image":html = "<img src=\"" + reader.result + "\">	";
+ 				break;
+				case "text":html = reader.result;
+ 				break;
+ 			}
+ 			droptarget.innerHTML = html;
+ 		};
+	}
+	var readfileBridge=function(e){
+		var target=e.target;
+		var files=e.dataTransfer.files;
+		e.preventDefault();
+		readfile(files);
+
+	}
+	droptarget.addEventListener("dragenter",function(e){
+		e.preventDefault();
+	},false);
+	droptarget.addEventListener("dragover",function(e){
+		e.preventDefault();
+	},false);
+	droptarget.addEventListener("drop",readfileBridge,false);
+	</script>
+</body>
+</html>

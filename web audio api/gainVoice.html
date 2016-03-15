@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>gainVoice</title>
+</head>
+<body>
+	<script>
+	// var context = new AudioContext();
+	// var audioInput=0;
+	// var audioPlayer=new Audio();
+	// var ab=new ArrayBuffer(1024*1024);
+	// var fr=0;
+	// var analyser=0;
+	// var gmssuccess=function (stream) {
+	// 	audioInput = context.createMediaStreamSource(stream);
+	// 	analyser = context.createAnalyser();
+	// 	audioInput.connect(analyser);
+	// 	 array = new Uint8Array(analyser.frequencyBinCount);		
+	// 	analyser.getFloatFrequencyData(array);
+
+	// 	analyser.connect(context.destination);
+	// 	console.log(array);
+ //    	//audioInput.connect(context.destination);
+ //  		//context.decodeAudioData(stream,function(buffer){console.log(buffer)}); ok 提示说流不是有效的arraybuffer
+ //    	// audioPlayer.src=webkitURL.createObjectURL(stream);
+ //    	// audioPlayer.play();
+ //    	// fr=new FileReader();
+ //    	// fr.readAsArrayBuffer(stream);
+ //    	// fr.onprogress=function(e){
+ //    	// 	console.log(event.loaded + "/" + event.total);
+ //    	// }
+ //    	// fr.onload=function(e){
+ //    	// 	console.log(fr.result);
+ //    	// }
+ //    	//此方法宣布死刑 Uncaught TypeError: Failed to execute 'readAsArrayBuffer' on 'FileReader': The argument is not a Blob.
+
+	// }
+	// var gmserror=function  (e) {
+	// 	console.log(e);
+	// }
+	// //var gms=navigator.webkitGetUserMedia({audio:true},gmssuccess,gmserror);
+</script>
+	<p>
+		<input type="text" value="" placeholder="请输入">
+		<input type="button" value="开始播放"></p>
+	<p>
+		<input type="button" value="开始分析">
+		<span></span>
+	</p>
+	<script>
+	var beginPlay=document.querySelectorAll("input")[1];
+	var beginAnalysis=document.querySelectorAll("input")[2];
+	var result=document.querySelector("span");
+	var message=document.querySelectorAll("input")[0]
+	var ALPHABET = '\n abcdefghijklmnopqrstuvwxyz0123456789,.!?@*';
+
+	var SonicCoder=function(params) {
+	  params = params || {};
+	  this.freqMin = params.freqMin || 500;
+	  this.freqMax = params.freqMax || 1000;
+	  this.freqError = params.freqError || 50;
+	  this.alphabetString = params.alphabet || ALPHABET;
+	  this.startChar = params.startChar || '^';
+	  this.endChar = params.endChar || '$';
+	  this.alphabet = this.startChar + this.alphabetString + this.endChar;
+	}
+
+
+	SonicCoder.prototype.msgToFreqs = function(msg) {
+	  // Get the index of the character.
+	  var chars=msg.split("");
+	  var index =0;
+	  var l=chars.length;
+	  var freqs=[];
+	//  chars.unshift.apply(chars,["h","j"]);
+	//  chars.push.apply(chars,["e","n","d"]);
+	  for(var i=0;i<l;i++){
+	  	 index=this.alphabet.indexOf(chars[i]);
+	 		 var freqRange = (this.freqMax - this.freqMin)/(this.alphabet.length);
+	 		 var freqOffset = Math.round(freqRange * index);
+	  		freqs.push(this.freqMin + freqOffset);
+	  }
+	  return freqs;
+	 
+	};
+
+	SonicCoder.prototype.freqsToMsg = function(freqs) {
+		var chars=[];
+	  	var index =0;
+	  	var l=1024;
+	  	var getValueOfFreq=function(freq){
+	  		var nyquist = 44100/2;
+ 			var index = Math. round(freq/nyquist *1024);
+ 			return freqs[index];
+	  	}
+	  	for(var i=0,al=this.alphabet.length;i<al;i++){
+	  		 var freqRange = (this.freqMax - this.freqMin)/(this.alphabet.length);
+	 		 var freqOffset = Math.round(freqRange * i);
+	 		 var freq=this.freqMin + freqOffset;
+	 		 if(getValueOfFreq(freq)!==0){
+	 		 	chars.push(this.alphabet[i]);
+	 		 }
+	  	}
+	  	return chars;
+	 
+	};
+	var gmssuccess=function (stream) {
+		audioInput = context.createMediaStreamSource(stream);
+		analyser = context.createAnalyser();
+		analyisss.smoothingTimeConstant=0;
+		//audioInput.connect(analyser);
+		//array = new Uint8Array(analyser.frequencyBinCount);		
+		//analyser.getFloatFrequencyData(array);
+		//analyser.connect(context.destination);
+
+	}
+	var gmserror=function  (e) {
+	 	console.log(e);
+	}
+	var gms=navigator.webkitGetUserMedia({audio:true},gmssuccess,gmserror);
+	var sonic=new SonicCoder();
+	var context = new AudioContext();
+	var analyser=0;
+	var beepLength = 46;
+	var msgs=[];
+	var timetick=0;
+	var play=function(){
+		var freqs=sonic.msgToFreqs(message.value);
+		console.log(freqs);
+		var oscillator = context.createOscillator();
+		 oscillator.type = 0;
+	     oscillator.connect(context.destination);
+	     now = context.currentTime;
+	     for (i = _j = 0, _len1 = freqs.length; _j < _len1; i = ++_j) {
+	       oscillator.frequency.setValueAtTime(freqs[i], now + (beepLength / 1000 * i));
+	     }
+	    //analyser.connect(context.destination);
+	     oscillator.start(now);
+	     timetick=Date.now();
+	     audioInput.connect(analyser);
+	     analyisss();
+	     return oscillator.stop(now + (beepLength / 1000 * (freqs.length + 1)));
+	    
+	}
+	beginPlay.onclick=play;
+	var analyisss=function(){
+		freqs= new Uint8Array(analyser.frequencyBinCount);
+		analyser.getByteFrequencyData(freqs);
+		var chars=sonic.freqsToMsg(freqs);
+		result.innerHTML+="<br>"+chars.join("");
+		if(Date.now()-timetick>3000){
+			audioInput.disconnect(analyser);
+			return;
+		}	
+		setTimeout(analyisss,46);
+	}
+</script>
+</body>
+</html>

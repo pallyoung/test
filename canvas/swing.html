@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas绘制钟摆</title>
+</head>
+<body>
+	<canvas id="clock"></canvas>
+	<script>
+		var sprite=function (name,painter,behaviors) {
+			if(name){
+				this.name=name;
+			}
+			if(painter){
+				this.painter=painter;
+			}
+			this.top=0;
+			this.left=0;
+			this.height=0;
+			this.width=0;
+			this.velocityX=0;
+			this.velocityY=0;
+			this.painter=0;
+			this.visible=0;
+			this.animating=false;
+			this.behaviors=behaviors||[];
+		}
+		sprite.prototype={
+			paint:function(context){
+				if(this.painter!==undefined&&this.visible){
+					this.painter.paint(this,context);
+				}
+
+			},
+			update:function(context,time){
+				for(var i=0,l=this.behaviors.length;i<l;i++){
+					this.behaviors[i].execute(this,context,time);
+				}
+			}
+		}
+	</script>
+</body>
+</html>

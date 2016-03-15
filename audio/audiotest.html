@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>audio test</title>
+</head>
+<body>
+	<!-- <audio src="1.mp3"></audio> -->
+	<script>
+	var audio=new Audio();
+	audio.onloadeddata=function () {
+		audio.play();
+	}
+	audio.src="1.mp3";
+	
+	</script>
+</body>
+</html>

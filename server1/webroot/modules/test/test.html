@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<script src="modules/Modules.js" type="text/javascript"></script>	
+	<title>test</title>
+</head>
+<body>
+<iframe src="modules/Modules.View.js"></iframe>
+
+	<script>
+	console.log(window.Modules.version);
+	Modules.mainsrc="modules";
+	Modules.imports("Modules.View.Input.Text");
+	</script>
+</body>
+</html>

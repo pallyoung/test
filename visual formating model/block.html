@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>控制框(Controlling Box)的形成</title>
+	<style>
+       .div {
+           width: 200px;
+           border: 1px solid gold;
+       }
+ 
+       .span {
+           border: 1px solid red;
+       }
+ 
+       .p {
+           width: 100px;
+           border: 1px solid green;
+       }
+    </style>
+</head>
+<body>
+	 <div class="div">
+       <span class="span">This is anonymous text before the P.
+           <P class="p">This is the content of P.</P>
+             This is anonymous text after the P.
+       </span>
+    </div>
+    <P>Some <EM>emphasized</em> text</P>
+    <STYLE type="text/css">
+        H3 {
+            display: run-in
+        }
+    </STYLE>
+    <H3>A run-in heading.</H3>
+<P>And a paragraph of text that follows it.
+</body>
+</html>

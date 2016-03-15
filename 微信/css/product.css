@@ -1,0 +1,224 @@
+
+#title{
+    top:110px;
+    height: 78px;
+    width: 100%;
+    text-align:center;
+    line-height: 78px;
+    font-size: 36px;
+    background: white;
+}
+#wrapper{
+    bottom: 0px;
+     background: #f7f7f7;
+}
+.bb2{
+  border-bottom:2px solid #f7f7f7 
+}
+.photo{
+  border:20px solid #e5e5e5;
+}
+.photo img{
+  width: 100%
+}
+.disNo{
+    height: auto;
+
+}
+.disNo .disNoList{
+  position: relative;
+}
+ .tan{
+  position: absolute;
+  right: 30px;
+  width: 0;
+  height: 0;
+  border: 15px solid #cccccc;
+  border-top:15px solid rgb(102,102,102);
+  border-bottom: 0px solid #cccccc;
+  top:20px;
+  font-size: 0px
+}
+.disNo .controlBox{
+  top:0;
+  height: 60px;
+  margin: 0
+}
+.disNo .controlBox:checked ~ label.tan{
+   border-bottom:15px solid rgb(102,102,102);
+  border-top: 0px solid #cccccc;
+}
+.disNo .controlBox:checked ~ p{
+  display: block;
+}
+.disNo .controlBox ~ p{
+  display: none;
+
+}
+.disNo p.h60{
+  height: 60px;
+  background: #cccccc;
+    font-size: 24px;
+    padding: 0 15px;
+    line-height: 60px;
+}
+.disNo .disNoList p:nth-child(n+2){
+  background: #999999;
+  font-size: 20px;
+  margin-bottom:2px;
+
+}
+.jianshu{
+  quotes:"(" ")";
+  color: #de531e
+}
+.jianshu:before{
+  content: open-quote;
+  color: #000000;
+}
+.jianshu:after{
+  content: close-quote;
+  color: #000000;
+}
+
+
+
+#wrapper.bge5{
+   background: #e5e5e5;
+   bottom: 90px
+}
+
+
+.comp img{
+   margin-right: 20px;
+  vertical-align:middle;
+  height: 30px
+}
+#wrapper *{
+  font-weight: bold;
+}
+.lh44{
+  line-height: 44px;
+}
+.bbb2{
+   border-bottom: 2px solid #b2b2b2
+}
+
+.buttonbox{
+  height: 110px;
+  background: #e5e5e5;
+  line-height: 110px;
+  border-bottom: 2px solid #b2b2b2
+}
+.buttonbox input[type="button"]{
+  margin-right: 20px;
+  vertical-align: middle;
+  font-size: 40px;
+  line-height: 70px;
+  height:70px;
+}
+.buttonbox input[type="button"]:nth-of-type(1){
+  background: url(../pic/zan.jpg);
+  background-size: 100% 100%;
+  width: 80px;
+  margin-left: 40px;
+
+  
+
+}
+
+.buttonbox input[type="button"]:nth-of-type(n+2){
+  
+  background:rgb(230,56,21);
+  color: white;
+  
+}
+.buttonbox input[type="button"]:nth-of-type(2){
+  width: 240px;
+}
+.buttonbox input[type="button"]:nth-of-type(3){
+ width: 190px;
+}
+.tht{
+  font-size: 24px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.table1{
+  table-layout: fixed;
+  border-collapse: collapse;
+  empty-cells: show;
+  border: 2px solid black;
+  font-size: 20px;
+  color: black;
+  box-size:border-box;
+  width: 100%;
+  text-align: center;
+
+
+}
+.table1 tr,.table1 td{
+   border: 2px solid black;
+}
+.photobox{
+  margin-bottom: 10px
+}
+.photobox img{
+  width: 100%;
+}
+.pmain{
+  width: 100%;
+  float: right;
+  margin-left: -120px;
+  margin-bottom: 28px;
+}
+.pside{
+  width: 100px;
+  margin-right: 20px;
+  float: left;
+   margin-bottom: 28px;
+}
+.pmain p{
+  margin-left: 120px;
+  font-size: 24px;
+  color: #7f7f7f;
+}
+.pside img{
+  width: 100%;
+}
+div.h100p p{
+  text-align: left;
+  padding:0 20px;
+  clear: both;
+}
+div.h100p p:nth-of-type(1) input[type="button"]:nth-of-type(1){
+  background: url(../pic/like.gif);
+  background-size: 100% 100%;
+  height: 30px;
+  width: 35px;
+  margin-right:10px;
+  vertical-align: bottom;
+}
+
+div.h100p p:nth-of-type(1) input[type="button"]:nth-of-type(2){
+  background: url(../pic/view.gif);
+  background-size: 100% 100%;
+  height:18px;
+  width: 35px;
+  margin-right:10px;
+  margin-top: 15px;
+}
+
+div.h100p p:nth-of-type(1) span{
+  display: inline-block;
+  width: 100px;
+  font-size: 24px;
+  color: #7f7f7f;
+  margin-top: 15px
+}
+div.h100p p:nth-of-type(2) img{
+  margin-right: 20px;
+  margin-top: 10px;
+  width: 35px;
+}

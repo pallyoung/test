@@ -1,0 +1,42 @@
+body{padding: 0;margin: 0;font-family: "simsun",Serif,Serif;font-size: 12px;line-height: 2em}
+div,p,img,ul,li{margin: 0;padding: 0;border: none;}
+ul,li{list-style-type: none;}
+h1,h2,h3,h4,h5,h6{margin: 0;padding: 0}
+/*基础类*/
+.center{margin: auto}
+/*公共元素*/
+.close{background-image: url(../imgs/close.png);width: 10px;height: 10px;display: inline-block;}
+/* 导航条样式 */
+.nav{margin: auto;width: 1008px;background-color: rgb(0,63,127);height: 3em;overflow: hidden;}
+.nav li{float: left;overflow: hidden;font-size: 1.5em;margin: 0 5px;width: 100px;line-height: 2em;height: 2em}
+/* 选项卡样式 */
+.tab{position: relative;overflow: hidden;}
+.tabTag{width:inherit;height: 2em;line-height: 2em;background-color: rgb(250,250,250);}
+.tabTag span{}
+.tabContent{overflow: hidden;position: relative;}
+.tabContent ul{float: left}
+.tabSelected{background-color: white}
+/*左侧菜单栏样式*/
+.menu{width:240px;font-family: "微软雅黑", Geneva, sans-serif;text-indent: 18px;float: left;position: relative;}
+.menu h1{color: rgb(255,255,255);background-color: rgb(162,28,29);line-height: 30px;font-size: 18px;height: 30px;margin: 0;}
+.menu ul li{line-height: 30px;height: 30px;overflow: hidden;width: 240px;padding: 0;}
+.menu ul .odd{background-color: rgb(241,241,241)}
+.menu .selected{background-color: rgb(136,118,110);color: rgb(255,255,255);height: 80px}
+
+.subMenu{width: 0px;height: 578px;float: left;overflow: hidden;position: absolute;top:30px;left: 240px}
+.subMenu ul,li{width: 780px;height: 578px}
+.subMenu ul li{display: none;}
+/*图片轮播*/
+.picFocus{position: relative;overflow: hidden;}
+.picFocus ul{position: relative;left: 0px}
+.picFocus ul,li{float: left;height: inherit;width:800px;}
+.picFocus .preNext{position: absolute;height:100px;width: 45px; background:url(../imgs/arrow.png) no-repeat 0 0;opacity: 0.2;top:150px;cursor:pointer;}
+.picFocus .pre{left: 0px}
+.picFocus .next{right: 0px;background-position: right}
+.picFocus .btnBack{position: absolute;bottom:0;opacity: 0.5;background-color:rgb(0,0,0);width: inherit;height: 20px;}
+.picFocus .btnBar{position: absolute;bottom:0;width: inherit;height: 20px;text-align: right;}
+.picFocus .btnBar .btn{background-color:rgb(255,255,255);display: inline-block;margin:0 5px 0 0;opacity:0.4;width: 25px;height:10px;cursor:pointer;}
+/*遮罩层*/
+.overlay{display: none;z-index: 9999;position: absolute;top:0;}
+.overlayBack{opacity: 0.5;background-color: rgb(0,0,0);position: absolute;top: 0;z-index: 10000;}
+.overlay .forward{background-color: rgb(255,255,255);z-index: 20000;position: absolute;}

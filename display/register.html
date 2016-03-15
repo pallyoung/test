@@ -1,0 +1,66 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>register</title>
+	<style>
+        .loginPlace { width:600px;height:400px;background-image:url(imgs/login.png);
+                      color:white;margin:50px auto;padding-top:50px;font-family:Arial Verdana sans-serif;text-align:center;
+                      overflow:hidden;background-color:none;
+        }
+        .userImage { width:185px;height:185px;background-image:url(/img/login.png);background-position:-42px -457px;margin:20px auto}
+        #login {margin:20px auto; }
+        form input{height:44px;border:none;margin:0;}
+        form input { width:200px}
+        .submit{ height:44px;width:42px;background-image:url(imgs/login.png);
+                 background-position:0 -457px;
+                        color:white;font:bold 20px/44px arial,sans-serif;display:inline-block;overflow:hidden;
+                       
+        } 
+        #register { }
+    </style>
+</head>
+<body>
+<div class="loginPlace">
+        <p class="userImage"></p>
+        <p>New user?  <a href="javascript:void(0)" class="btn">Register Here</a></p>
+    <form id="login">
+        <div>
+        <input type="text" value="Username:"/>
+        <input type="text" value="Password:" />
+        </div>    
+    </form>
+        <span class="submit">Go</span>
+</div>
+    <div>
+     <h3>Register Now</h3>   
+    <form id="register">
+        <input type="text" value="Username"/>
+        <input type="text" value="Password" />
+        <input type="text" value="Confirm Password"/>
+        <input type="text" value="Email" />
+        <button type="button">Submit</button>
+    </form>
+        </div>
+        <p style="position:relative;width:200px"><label style="width:80px">选择银行：</label><input type="text" id="input1" style="position:absolute;width:100px;top:0px;left:80px;z-index:-1"  value="中国建设银行"/><span style="position:absolute;width:20px;top:0px;right:0px;z-index:-1">></span>
+<select name="" id="select1"style="opacity:0;width:110px;position:absolute;top:0px;left:80px;">
+       	<option>中国银行</option>
+       	<option>中国建设银行</option>
+       	<option>中国农业银行</option>
+       	<option>中国交通银行</option>
+       	<option>中国工商银行</option>
+       </select>
+        </p>
+       
+       <script type="text/javascript">
+       (function () {
+       	var input1=document.getElementById("input1");
+       	var select1=document.getElementById("select1");
+       	select1.onchange=function(){
+       		input1.value=select1.options[select1.selectedIndex].text;
+       	}
+
+       })()
+       </script>	
+</body>
+</html>

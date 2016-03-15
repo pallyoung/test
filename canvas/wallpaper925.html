@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>绘制925的桌面壁纸</title>
+</head>
+<body>
+	<canvas id="wallpaper"></canvas>
+	<script>
+		wallpaper=document.querySelector("#wallpaper");
+		wallpaper.height="1280";
+		wallpaper.width="728";
+		ct=wallpaper.getContext("2d");
+		ct.shadowColor="rgba(0,0,0,0.5)";
+		ct.shadowOffsetX=5;
+		ct.shadowOffsetY=5;
+		ct.shadowBlur=5;	
+		ct.strokeRect(0,0,100,100);
+		ct.arc(50,50,50,0,2*Math.PI);
+		ct.fillStyle="rgba(221,33,22,1)";
+		ct.strokeStyle="rgba(221,33,22,1)";
+		ct.arcTo(100,100,50,50,50);
+		ct.closePath();
+		ct.fill();
+	</script>
+</body>
+</html>

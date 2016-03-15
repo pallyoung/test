@@ -1,0 +1,19 @@
+{
+  "name": "Hello Polymer",
+  "version": "0.0.0",
+  "authors": [
+    "Spencer <pallyoung@163.com>"
+  ],
+  "main": "bower",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0"
+  }
+}

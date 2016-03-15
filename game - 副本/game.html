@@ -1,0 +1,363 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport">
+
+    <title>a simple game</title>
+    <link href="CSS/style.css" rel="stylesheet" />
+    <script src="JS/jquery-1.7.2.min.js"></script>
+    <script src="JS/game.js"></script>
+    <script src="JS/WeixinApi.js"></script>
+    <script src="JS/WeixinShare.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #background img {
+            height: 100%;
+            float: left;
+        }
+
+        .mask {
+            display: none;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            background: rgba(0,0,0,.6);
+            z-index: 100;
+        }
+
+            .mask div {
+                display: none;
+                height: 200px;
+                width: 300px;
+                margin: 0 auto;
+                margin-top: 10%;
+                border: 5px solid #0071b8;
+                background: #fff;
+            }
+
+        #Popup1 {
+            display: none;
+            height: 200px;
+            width: 300px;
+            background: url(IMG/popup1bg.gif) no-repeat;
+            background-size: 100% 100%;
+            position: relative;
+        }
+
+            #Popup1 span {
+                display: block;
+                height: 18px;
+                width: 30px;
+                color: #0071b8;
+                margin-left: 157px;
+                margin-top: 45px;
+                text-align: center;
+            }
+
+            #Popup1 button {
+                display: block;
+                outline: none;
+                height: 15%;
+                width: 40%;
+                color: #fff;
+                background: #0071b8;
+                border: none;
+                border-radius: 5px;
+                float: left;
+                font-size: 1em;
+                margin-left: 10px;
+                margin-top: 100px;
+            }
+
+
+        .mask div article:first-child {
+            width: 80%;
+            height: 30%;
+            background: url(IMG/biaotou.gif) no-repeat;
+            background-size: 100% 100%;
+            margin: 0 auto;
+        }
+
+        .mask div article:nth-child(2) {
+            width: 80%;
+            height: 40%;
+            margin: 0 auto;
+        }
+
+            .mask div article:nth-child(2) ul {
+                display: block;
+                height: 100%;
+                width: 100%;
+                margin-top: 5%;
+            }
+
+                .mask div article:nth-child(2) ul li {
+                    display: block;
+                    height: 30%;
+                    width: 100%;
+                }
+
+                    .mask div article:nth-child(2) ul li input {
+                        height: 100%;
+                        width: 100%;
+                        background: #29a7de;
+                        border: none;
+                        text-align: center;
+                        color: #fff;
+                    }
+        /* webkit 浏览器*/
+        #UserName::-webkit-input-placeholder {
+            color: #fff;
+            font-weight: bolder;
+        }
+
+        #PhoneNum::-webkit-input-placeholder {
+            color: #fff;
+            font-weight: bolder;
+        }
+        /* 火狐浏览器 */
+        #PhoneNum::-moz-placeholder {
+            color: #fff;
+            font-weight: bolder;
+        }
+
+        #UserName::-moz-placeholder {
+            color: #fff;
+            font-weight: bolder;
+        }
+
+
+        .mask div article:last-child {
+            width: 80%;
+            height: 15%;
+            margin: 0 auto;
+        }
+
+            .mask div article:last-child button {
+                display: block;
+                outline: none;
+                height: 100%;
+                width: 50%;
+                color: #fff;
+                background: #0071b8;
+                border: none;
+                border-radius: 5px;
+                margin: 0 auto;
+                font-size: 1em;
+            }
+
+        /*sharemask*/
+        .ShareMask {
+            display: none;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            background: rgba(0,0,0,.6);
+            z-index: 101;
+        }
+
+            .ShareMask div {
+                height: 200px;
+                width: 300px;
+                background: url(img/ShareImg.png) no-repeat right;
+                background-size: auto 100%;
+                float: right;
+            }
+        /* 设备竖屏时调用该段css代码 */
+        @media all and (orientation : portrait) {
+            .mask div {
+                margin-top: 50%;
+            }
+
+            #Loading div {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background: url(img/loading_heng.gif) no-repeat;
+                background-size: 100% 100%;
+            }
+        }
+        /* 设备横屏时调用该段css代码 */
+        @media all and (orientation : landscape) {
+            .mask div {
+                margin-top: 10%;
+            }
+
+            #Loading div {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background: url(img/loading_heng.gif) no-repeat;
+                background-size: 100% 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <blockquote style="margin: 0; padding: 0px; position: absolute; top: -6%; z-index: 10000; width: 100%; background-color: black; opacity: 0.6; color: #ffffff; text-align: center; height: 6%; font-size: 1em;"><strong style="vertical-align: middle;"></strong></blockquote>
+    <!--  <audio src="JS/music.mp3" autoplay="autoplay"></audio>-->
+    <div class="ShareMask">
+        <div></div>
+    </div>
+    <div class="mask">
+        <div id="Popup1">
+            <span></span>
+            <button onclick="Share_mask()" style="margin-left: 30px;">立即分享</button>
+            <button onclick="location.reload()">再玩一次</button>
+        </div>
+        <div class="Popup2">
+            <article></article>
+            <article>
+                <ul>
+                    <li>
+                        <input type="text" placeholder="我的大名" id="UserName" /></li>
+                    <li style="margin-top: 5%;">
+                        <input type="text" placeholder="我的手机号码" id="PhoneNum" /></li>
+                </ul>
+            </article>
+            <article>
+                <button onclick="next()">提交</button>
+            </article>
+        </div>
+        <div></div>
+    </div>
+    <div style="width: 100%; position: absolute; height: 100%; overflow: hidden; overflow: hidden;" id="runinggame">
+        <div style="position: absolute; height: 100%;" id="background">
+            <img src="img/s1.gif" style="height: 100%;" onload="listenLoading(0)" /><img src="img/s2.gif" style="height: 100%;" onload="listenLoading(1)" alt=""><img src="img/s3.gif" onload="listenLoading(2)" style="height: 100%;" alt=""><img src="img/s4.gif" onload="listenLoading(3)" style="height: 100%;" alt=""><img src="img/end.gif" style="height: 100%;" onload="listenLoading(4)" alt="">
+        </div>
+        <img src="img/human.png" style="position: absolute;" id="role">
+        <div style="position: absolute;" id="button">
+            <img src="img/acc.png" style="width: 100%; height: 100%; position: absolute;" style="position: absolute;" />
+            <div style="width: 100%; height: 100%; position: absolute;"></div>
+        </div>
+        <div style="position: absolute; color: rgb(20,70,95)" id="timer"></div>
+        <img src="img/start.png" alt="" id="start">
+        <!-- <div style="border:2px soild rgb(127,184,219);width:80%;" id="end">
+			<div id="submit"><p>填写好信息方便中奖通知您<br>别让苹果6找不到你哦！</p>
+				<form action=""><input type="text" value="我的大名"><br><input type="tel" value="我的手机号码"><br><input type="button" value="提交"></form>
+			</div>
+			<div id="share"><p>恭喜您用天翼4G跑完了广深东佛，仅用了<span></span>秒。获得了免费抢苹果6的资格。</p>
+				<p>分享给朋友能增加中奖率</p>
+				<p>已经有32890人参加了此活动</p></div>
+		</div> -->
+        <div style="width: 100%; position: absolute; height: 100%; top: 0" id="Loading">
+            <div style="">
+            </div>
+            <!--   <img style="position: absolute; height: 100%; width: 100%" src="img/loading2.gif" alt="">-->
+        </div>
+    </div>
+    <script>
+
+        //TopTipsBar
+        function TopTipsBar(str) {
+            $("blockquote strong").html(str);
+            $("blockquote").animate({ top: "0" }, 500);
+            var timer = setTimeout(function () {
+                $("blockquote").animate({ top: "-6%" }, 500);
+            }, 3000);
+        }
+        //ENDTopTipsBar
+        //输入文本框验证
+
+        $("#PhoneNum").keyup(function () {
+
+            $(this).val($(this).val().replace(/\D/gi, ''));
+        });
+
+        //提交
+        function next() {
+            if ($("#UserName").val() == '' || $("#PhoneNum").val() == '' || $("#PhoneNum").val().length != 11) {
+                TopTipsBar("请完整填写资料!");
+
+            }
+            else {
+                setdata();
+                //$(".Popup2").css("display", "block");
+                //$("#Popup1").css("display", "none");
+                WeixinApi.closeWindow();
+            }
+
+        }
+
+        function setdata() {
+            var user_name = $("#UserName").val();
+            var user_phone = $("#PhoneNum").val();
+            $.ajax({
+                type: "post",
+                url: "getdata.php",
+                data: { "name": user_name, "phone": user_phone },
+                success: function (str) {
+                    TopTipsBar(str);
+                }
+            })
+        }
+        function Share_mask() {
+            $(".ShareMask").css("display", "block");
+        }
+        WeixinApi.ready(function (Api) {
+
+            // 微信分享的数据
+            var wxData = {
+                "appId": "", // 服务号可以填写appId
+                "imgUrl": 'http://112.124.34.142/test10/IMG/icon.jpg',
+                "link": 'http://112.124.34.142/test10/index.html',
+                "desc": "",
+                "title": "卓越4G,智选天翼"
+            };
+
+            // 分享的回调
+            var wxCallbacks = {
+                // 分享操作开始之前
+                ready: function () {
+                    // 你可以在这里对分享的数据进行重组
+                    wxData.desc = "我用天翼4G跑完全程,一共用了" + time + "秒,获得抢iPhone6的资格!";
+                },
+                // 分享被用户自动取消
+                cancel: function (resp) {
+                    // 你可以在你的页面上给用户一个小Tip，为什么要取消呢？
+                    wxData.desc = "我用天翼4G跑完全程,一共用了" + time + "秒,获得抢iPhone6的资格!";
+                },
+                // 分享失败了
+                fail: function (resp) {
+                    // 分享失败了，是不是可以告诉用户：不要紧，可能是网络问题，一会儿再试试？
+                    wxData.desc = "我用天翼4G跑完全程,一共用了" + time + "秒,获得抢iPhone6的资格!";
+                },
+                // 分享成功
+                confirm: function (resp) {
+                    // 分享成功了，我们是不是可以做一些分享统计呢？
+                    wxData.desc = "我用天翼4G跑完全程,一共用了" + time + "秒,获得抢iPhone6的资格!";
+
+                    $(".Popup2").css("display", "block");
+                    $("#Popup1").css("display", "none");
+
+                },
+                // 整个分享过程结束
+                all: function (resp) {
+                    // 如果你做的是一个鼓励用户进行分享的产品，在这里是不是可以给用户一些反馈了？
+                    wxData.desc = "我用天翼4G跑完全程,一共用了" + time + "秒,获得抢iPhone6的资格!";
+                }
+            };
+
+            // 用户点开右上角popup菜单后，点击分享给好友，会执行下面这个代码
+            Api.shareToFriend(wxData, wxCallbacks);
+
+            // 点击分享到朋友圈，会执行下面这个代码
+            Api.shareToTimeline(wxData, wxCallbacks);
+
+            // 点击分享到腾讯微博，会执行下面这个代码
+            Api.shareToWeibo(wxData, wxCallbacks);
+        });
+
+
+    </script>
+</body>
+</html>

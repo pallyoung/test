@@ -1,0 +1,43 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charest="utf-8"/>
+<title>导航条演示</title>
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<script type="text/javascript">
+function addStyle(box,styleType,styleString){
+	box.style.setProperty(styleType,styleString);
+}
+function hoverOn(e){
+	event=e||window.event;
+	target=event.target||event.srcElement;
+	if(target.tagName=="LI"){
+		target.style.backgroundColor="rgb(0,113,202)";
+	}
+}
+function hoverOut(e){
+	event=e||window.event;
+	target=event.target||event.srcElement;
+	if(target.tagName=="LI"){
+		target.style.backgroundColor="";
+	}
+}
+window.onload=function(){
+	nav=document.getElementsByClassName("nav")[0];
+	nav.addEventListener("mouseover",hoverOn,false);
+	nav.addEventListener("mouseout",hoverOut,false);
+}
+</script>
+</head>
+<body>
+<ul class="nav">
+<li>首页</li>
+<li>服务</li>
+<li>产品介绍</li>
+<li>技术支持</li>
+<li>关于我们</li>
+<li>联系方式</li>
+<li>网站导航</li>
+</ul>
+</body>
+</html>

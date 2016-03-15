@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="import"
+      href="bower_components/polymer/polymer.html">
+  <title>view</title>
+</head>
+<body>
+  <dom-module id="configurable-name-tag">
+  <template>
+    <!-- bind to the "owner" property -->
+    Hello World! This is {{owner}} !
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: "configurable-name-tag",
+    properties: {
+      // declare the owner property
+      owner: {
+        type: String,
+        value: "Daniel"
+      }
+    }
+  });
+</script>
+</body>
+</html>

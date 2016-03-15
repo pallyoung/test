@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>123</title>
+	<style>
+		 .screen{
+		 	position: relative;
+		 	width: 200px;
+		 	height: 500px;
+		 	background: rgb(220,220,220);
+		 }
+		.num{
+			position: absolute;
+			width:50px;
+			height: 50px;
+			line-height: 50px;
+			font-size: 12px;
+			background: rgb(11,220,220);
+			text-align: center;
+		}
+		.num1{
+
+		}
+		.num2{
+
+		}
+		.num3{
+
+		}
+	</style>
+</head>
+<body>
+	<article>
+		<hgroup>
+			<h4>a 123 game</h4>
+		</hgroup>
+		<section id="gamesereen" class="screen"></section>
+		<script>
+		var rand123=function(){
+			return Math.ceil(Math.random()*3);
+			// var ran=Math.random();
+			// if(ran<0.33333){
+			// 	return 2;
+			// }else if(ran<0.6666666){
+			// 	return 5;
+			// }else{
+			// 	return 7;
+			// }
+		}
+		var Num=function(num){
+			this.content=document.createElement("span");
+			this.className="num";
+			this.html=num;
+		}
+		Num.prototype={
+			set className(className){
+				this.content.className=className;
+			},
+			set bottom(bottom){
+				this.content.style.bottom=bottom;
+			},
+			get bottom(){
+				return this.content.style.bottom;
+			},
+			get left(){
+				return this.content.style.left;
+			},
+			set left(left){
+				this.content.style.left=left;
+			},
+			get html(){
+				return this.content.innerHTML;
+			},
+			set html(html){
+				this.content.innerHTML=html;
+			}
+		}
+		var Dock=function(content){
+			this.content=content;
+			this.docks=[];
+			this.active=0;
+			this.tick=null;
+			this.init();
+		}
+		Dock.prototype={
+			init:function(){
+				this.nextNum();
+				this.addDockRow();
+				var self=this;
+				this.tick=setInterval(function(){
+					self.move("bottom");
+				},500);
+			},
+			addDockRow:function(){
+				this.docks.push([null,null,null,null]);
+			},
+			 move:function(dir){
+			 	var dom=this.active;
+			 	var self=this;
+				var Dir={
+					left:function(){
+						dom.left=dom.left&&parseInt(dom.left)>=50?(parseInt(dom.left)-50)+"px":"0px"
+					},
+					top:function(){
+
+					},
+					right:function(){
+						dom.left=dom.left&&parseInt(dom.left)<=100?(parseInt(dom.left)+50)+"px":"150px"
+					},
+					bottom:function(){
+						if(!self.reachBottom()){
+							dom.bottom=(parseInt(dom.bottom)-50)+"px";
+						}						
+					}
+				}
+				if(dom&&dir){
+					Dir[dir]();
+				}
+				return this;
+			},
+			check:function(){
+				var docks=this.docks;
+				var l=docks.length-1;
+				for(var i=l;i>0;i--){
+					for(var j=0;j<4;j++){
+						if(docks[i][j]!==null&&parseInt(docks[i][j])==parseInt(docks[i-1][j])){
+
+							docks[i-1][j]=2*parseInt(docks[i-1][j]);
+							docks[i][j]=null;
+						}
+					}
+					
+				}
+				this.content.innerHTML="";
+				for(var i=l;i>=0;i--){
+					for(var j=0;j<4;j++){
+						if(docks[i]&&docks[i][j]!==null){
+							var num=new Num(docks[i][j]);
+							num.left=j*50+"px";
+							num.bottom=i*50+"px";
+							this.content.appendChild(num.content);
+						}
+						
+					}
+				}
+				return this;
+			},
+			nextNum:function(){
+				this.active=new Num(rand123());
+				this.active.left="50px";
+				this.active.bottom="450px"
+				this.content.appendChild(this.active.content);
+				return this;
+			},
+			reachBottom:function(){
+				var active=this.active;
+				var bottom=parseInt(active.bottom);
+				var left=parseInt(active.left);
+				var col=Math.floor(left/50);
+				var row=Math.floor(bottom/50);
+				var docks=this.docks;
+				if((docks[row-1]&&docks[row-1][col]&&docks[row-1][col]!==null)||row==0){
+					if(docks[row]){
+						docks[row][col]=active.html;
+					}else{
+						this.addDockRow();
+						docks[row][col]=active.html;
+					}
+					this.check();
+					this.nextNum();
+					return true;
+				}else{
+					return false
+				}
+			}
+		}
+		var g123=new Dock(document.querySelector("#gamesereen"));
+		document.body.addEventListener("keyup",function(e){
+			if(e.keyCode==37){
+				g123.move("left");
+			}else if(e.keyCode==39){
+				g123.move("right");
+			}
+		},false);
+
+	</script></article>
+</body>
+</html>

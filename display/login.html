@@ -1,0 +1,131 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charest="utf-8"/>
+	<title>登录和注册</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css"/>
+	<style type="text/css">
+    .overlay{display: none;z-index: 9999;position: absolute;top:0;}
+    .overlayBack{opacity: 0.5;background-color: rgb(0,0,0);position: absolute;top: 0;z-index: 10000;}
+    .overlay .forward{background-color: rgb(255,255,255);z-index: 20000;position: absolute;width: 500px;height: 400px}
+    .overlay .forward div h3{background-color: rgb(250,250,250);height: 50px;line-height: 50px}
+
+    .tab{position: relative;overflow: hidden;width: 400px;height: 224px;margin:50px auto;}
+    .tabTag{width:inherit;height: 2em;line-height: 2em;background-color: rgb(250,250,250);width: 400px;height: 24px;}
+    .tabTag span{display: inline-block;height: 24px;width: 100px}
+    .tabContent{overflow: hidden;position: relative;width: 800px;height: 200px;}
+    .tabContent div{width: 400px;height: 200px;float: left}
+    .tabSelected{background-color: white}
+
+	</style>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script type="text/javascript">
+	function check(e){
+       target=e.srcElement;
+       if(target.getAttribute("reg")){
+          var reg=target.getAttribute("reg");
+          var regExp=RegExp(reg);
+          if(!regExp.test(target.value)){
+              target.nextSibling.innerHTML=target.previousElementSibling.innerHTML+"格式不正确";
+          }
+          return true;
+       }
+       return false;
+	}
+	function clearInfo(e){
+		target=e.srcElement;
+		if(target.nextSibling&&target.type!=="checkbox"){
+		target.nextSibling.innerHTML="";
+	}
+	}
+	function registerFn(e){
+		var children=e.srcElement.elements;
+		e.preventDefault();
+		for(var i=0;i<children.length;i++){
+			if(!check(children[i])||children[i].value==undefined){
+				return false;
+			};
+		}
+		fan6.cookieSet(this.username,this.password);
+		fan6.cookieSet(this.email,this.password);
+		return false;
+
+	}
+	function tabSelected(e){
+       	fan6(".tab .tabTag span").classToggle("tabSelected");
+	}
+	window.onload=function () {
+		var login=new fan6.overlay(fan6("#login").box[0],fan6("#login .overlayBack").box[0],fan6("#login .forward").box[0]);
+	    var register=new fan6.overlay(fan6("#register").box[0],fan6("#register .overlayBack").box[0],fan6("#register .forward").box[0]);
+        var loginButton=fan6("#loginButton");
+        var registerButton=fan6("#registerButton");
+        loginButton.eventAdd("click",function(){login.show();});
+        registerButton.eventAdd("click",function(){register.show()});
+        
+        var close=fan6(".close");
+        close.eventAdd("click",function(){login.hidden()});
+        close.eventAdd("click",function(){register.hidden()});
+
+        var forms=fan6("form");
+        forms.eventAdd("change",check);
+        forms.eventAdd("click",clearInfo);
+
+        tab=new fan6.tabBox(fan6(".tab .tabTag"),fan6(".tab .tabContent"),"click",tabSelected);
+	}
+	</script>
+</head>
+<body>
+	<div id="userInfo"></div>
+	<div id="loginInfo">
+		<a href="javascript:void(0)" id="loginButton">登录</a>
+		<a href="javascript:void(0)" id="registerButton">注册</a>
+	</div>
+	<div id="login" class="overlay">
+		<div class="overlayBack"></div>
+		<div class="forward">
+			<div>
+				<h3>登录 <a class="close" href="javascript:void(0)"></a></h3>
+			</div>
+			<div class="tab">
+				<div class="tabTag">
+					<span class="tabSelected">邮箱登录</span>
+					<span>用户名登录</span>
+				</div>
+				<div class="tabContent">
+					<div >
+						<form id="loginMail">
+							<p><span>邮　　箱</span><input type="text" reg="^\\w+@[\\w]+\\.[\\w]+\\.[\\w\\.]+[\\w]$" name="mail" /><span></span></p>
+							<p><span>密　　码</span><input type="password" name="password" /></p>
+							<p><input type="checkbox" name="autoLogin" /><span>下次自动登录</span></p>
+							<p><input type="submit" value="登录" name="submit"/></p>
+						</form>
+					</div>
+					<div >
+						<form id="loginUser">
+							<p><span>用 户 名</span><input type="text" reg="^\\w+$" name="username" /><span></span></p>
+							<p><span>密　　码</span><input type="password" name="password"/></p>
+							<p><input type="checkbox" name="autoLogin"/><span>下次自动登录</span></p>
+							<p><input type="submit" value="登录" name="submit"/></p>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="register"  class="overlay" >
+		<div class="overlayBack"></div>
+		<div class="forward">
+			<div><h3>注册<a class="close" href="javascript:void(0)"></a></h3></div>
+			<div class="tab">
+	            <form id="registerForm">
+	                <p><span>用 户 名</span><input type="text" reg="^\\w+$" name="username"/><span></span></p>
+					<p><span>邮　　箱</span><input type="text" reg="^\\w+@[\\w]+\\.[\\w]+\\.[\\w\\.]+[\\w]$" name="email"/><span></span></p>
+					<p><span>密　　码</span><input type="password" name="password" /></p>
+					<p><span>确认密码</span><input type="password" name="passwordC" /></p>
+					<p><input type="submit" value="注册" name="submit" /></p>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

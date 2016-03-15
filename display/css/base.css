@@ -1,0 +1,16 @@
+body,div,p,span{font-family: "simsun",Serif,Serif;font-size: 12px;line-height: 2em}
+body,div,p,img,ul,li,h1,h2,h3,h4,h5,h6{margin: 0;padding: 0;border: none;}
+ul,li{list-style-type: none;}
+table{border-collapse: collapse;border-spacing: 0;}
+img{border:0;}
+/*分栏,整个页面分为10栏，分别为10%-100%*/
+.row1{width:10%;}
+.row2{width: 20%;}
+.row3{width: 30%;}
+.row4{width: 40%;}
+.row5{width: 50%;}
+.row6{width: 60%;}
+.row7{width: 70%;}
+.row8{width: 80%;}
+.row9{width: 90%;}
+.row10{width: 100%;}

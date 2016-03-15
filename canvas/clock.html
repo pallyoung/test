@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>clock</title>
+</head>
+<body>
+	<div>
+		<canvas id="clock" height="400" width="400"></canvas>
+	</div>
+	<script>
+	var clock=document.getElementById("clock");
+	var drawing=clock.getContext("2d");
+	drawing.fillStyle="rgb(0,0,0)";
+	drawing.moveTo(200,200);
+	drawing.beginPath();
+	drawing.save();
+	drawing.shadowBlur=5;
+	drawing.shadowOffsetX=5;
+	drawing.shadowOffsetY=5;
+	drawing.shadowColor="rgb(121,121,121)";
+	drawing.lineWidth=10;
+	var gradient=drawing.createLinearGradient(0,0,200,390);
+	gradient.addColorStop(0,"rgb(207,207,207");
+	gradient.addColorStop(1,"rgb(240,240,240");
+	drawing.strokeStyle=gradient;
+
+	drawing.arc(200,200,190,0,Math.PI*2,true);
+	//drawing.arc(200,200,180,0,Math.PI*2,true);
+	drawing.stroke();
+	drawing.restore()
+	drawing.closePath();
+	drawing.moveTo(200,200);
+	drawing.beginPath();
+	drawing.lineWidth=1;
+	drawing.arc(200,200,184,0,Math.PI*2,false);
+	gradient=drawing.createRadialGradient(200,200,1,200,200,180);
+	gradient.addColorStop(0,"rgb(240,240,240");
+	gradient.addColorStop(1,"rgb(230,230,230");
+	drawing.fillStyle=gradient;
+	drawing.fill();
+	drawing.closePath();
+	drawing.moveTo(200,200);
+	drawing.beginPath();
+	drawing.arc(200,200,2,0,Math.PI*2,true);
+	drawing.fill();
+	drawing.save();
+	drawing.translate(200,200);
+	drawing.fillStyle="rgb(0,0,0)";	
+	for(var i=0;i<60;i++){
+		drawing.save();	
+		drawing.rotate(-6*i*Math.PI/180);
+		if(i%5==0){			
+			drawing.fillRect(-2,-180,4,10);
+		}else{
+			drawing.fillRect(-1,-180,2,5);
+		}
+		drawing.restore();
+	}
+	for(var i=12;i>=1;i--){
+		drawing.fillText(i,150*Math.cos((30*i-90)*Math.PI/180),150*Math.sin((30*i-90)*Math.PI/180));
+	}
+
+	var clockPan=clock.toDataURL();	
+	drawing.shadowBlur=15;
+	drawing.restore();
+	clock.height=130;
+	clock.width=13;
+	drawing.shadowBlur=15;
+	drawing.shadowOffsetX=0;
+	drawing.shadowOffsetY=3;
+	drawing.shadowColor="black";
+	drawing.rect(0,0,clock.width-3,clock.height);
+	drawing.fill();
+	var hourPin=clock.toDataURL();
+	clock.height=180;
+	clock.width=11;
+	drawing.shadowBlur=15;
+	drawing.shadowOffsetX=3;
+	drawing.shadowOffsetY=3;
+	drawing.shadowColor="black";	
+	drawing.fillRect(0,0,clock.width-3,clock.height);
+	var minPin=clock.toDataURL();
+	clock.height=200;
+	clock.width=4;
+	// drawing.shadowBlur=15;
+	// drawing.shadowOffsetX=2;
+	// drawing.shadowOffsetY=2;
+	// drawing.shadowColor="black";
+	drawing.lineWidth=3;
+	drawing.moveTo(1,0);
+	drawing.lineTo(0,200);
+	drawing.lineTo(4,200);
+	drawing.lineTo(2,0);
+	drawing.closePath();		
+	drawing.fill();
+	var sePin=clock.toDataURL();
+	clock.height=8;
+	clock.width=8;
+	// drawing.shadowBlur=15;
+	// drawing.shadowOffsetX=2;
+	// drawing.shadowOffsetY=2;
+	// drawing.shadowColor="black";
+	drawing.lineWidth=1;
+	drawing.moveTo(2,2);
+	drawing.arc(4,4,4,0,Math.PI*2,true);
+	drawing.fillStyle="rgb(233,233,233)";	
+	drawing.fill();
+	var point=clock.toDataURL();
+	var date=new Date();
+	var h=date.getHours()>12?date.getHours()-12:date.getHours();
+	var m=date.getMinutes();
+	var s=date.getSeconds();
+	h=30*(h+m/60);
+	m=6*(m+s/60);
+	s=6*s;
+	//h=0;m=0;s=0
+	var clocks="";
+	clocks+="<div class='clockbg'>";
+	clocks+="<img src='"+clockPan+"' class='clockpan'/>";
+	clocks+="<img src='"+hourPin+"' class='hourPin'/>";
+	clocks+="<img src='"+minPin+"' class='minPin'/>";
+	clocks+="<img src='"+sePin+"' class='sePin'/>";
+	clocks+="<img src='"+point+"' class='point'/></div>";
+	var fragment=document.createElement("div");
+	fragment.innerHTML=clocks;
+	document.body.appendChild(fragment);
+	var css=document.createElement("style");
+	document.head.appendChild(css);
+	css=document.styleSheets[0];
+	css.insertRule(".clockbg{position:relative}",0);
+	css.insertRule(".clockpan{position:absolute;top:0;}",1);
+	css.insertRule(".hourPin{position:absolute;top:100px;left:196px;transform-origin:5px 100px;-webkit-animation:action1 86400s linear 0s infinite;transform:rotate("+h+"deg) }",2);
+	css.insertRule(".minPin{position:absolute;top:50px;left:197px;transform-origin:3px 150px;-webkit-animation:action2 3600s linear 0s infinite;transform:rotate("+m+"deg) }",3);
+	css.insertRule(".sePin{position:absolute;top:30px;left:198px;transform-origin:2px 170px;-webkit-animation:action3 60s steps(60) 0s infinite;transform:rotate("+s+"deg) }",4);
+	css.insertRule("@-webkit-keyframes action1{0%{transform:rotate("+h+"deg)}100%{transform:rotate("+(360+h)+"deg)}}",5);
+	css.insertRule("@-webkit-keyframes action2{0%{transform:rotate("+m+"deg)}100%{transform:rotate("+(360+m)+"deg)}}",6);
+	css.insertRule("@-webkit-keyframes action3{0%{transform:rotate("+s+"deg)}100%{transform:rotate("+(360+s)+"deg)}}",7);
+	css.insertRule(".point{position:absolute;top:196px;left:196px;}",8);
+
+	var piantClock=function(drawing){
+		clock.height=400;
+		clock.width=400;
+		drawing.moveTo(200,200);
+		drawing.beginPath();
+		drawing.save();
+		// drawing.shadowBlur=5;
+		// drawing.shadowOffsetX=5;
+		// drawing.shadowOffsetY=5;
+		drawing.shadowColor="rgb(121,121,121)";
+		drawing.lineWidth=10;
+		var gradient=drawing.createLinearGradient(0,0,200,390);
+		gradient.addColorStop(0,"rgb(207,207,207");
+		gradient.addColorStop(1,"rgb(240,240,240");
+		drawing.strokeStyle=gradient;
+
+		drawing.arc(200,200,185,0,Math.PI*2,true);
+		//drawing.arc(200,200,180,0,Math.PI*2,true);
+		drawing.stroke();
+		drawing.restore()
+		drawing.closePath();
+		drawing.moveTo(200,200);
+		drawing.beginPath();
+		drawing.lineWidth=1;
+		drawing.arc(200,200,180,0,Math.PI*2,false);
+		gradient=drawing.createRadialGradient(200,200,1,200,200,180);
+		gradient.addColorStop(0,"rgb(240,240,240");
+		gradient.addColorStop(1,"rgb(230,230,230");
+		drawing.fillStyle=gradient;
+		drawing.fill();
+		drawing.closePath();
+		drawing.moveTo(200,200);
+		drawing.beginPath();
+		drawing.arc(200,200,2,0,Math.PI*2,true);
+		drawing.fill();
+		drawing.save();
+		drawing.translate(200,200);
+		drawing.fillStyle="rgb(0,0,0)";	
+		for(var i=0;i<60;i++){
+			drawing.save();	
+			drawing.rotate(-6*i*Math.PI/180);
+			if(i%5==0){			
+				drawing.fillRect(-2,-179,4,10);
+			}else{
+				drawing.fillRect(-1,-179,2,5);
+			}
+			drawing.restore();
+		}
+		for(var i=12;i>=1;i--){
+			drawing.fillText(i,150*Math.cos((30*i-90)*Math.PI/180),150*Math.sin((30*i-90)*Math.PI/180));
+		}
+		drawing.restore();
+
+	}
+	var piantHour=function(drawing){
+		var date=new Date();
+		drawing.save();
+		drawing.fillStyle="black";
+		var h=date.getHours()>12?date.getHours()-12:date.getHours();
+		var m=date.getMinutes();
+		var s=date.getSeconds();
+		h=30*(h+m/60);
+		m=6*(m+s/60);
+		s=6*s;
+		//h=0;
+		drawing.translate(200,200);
+		drawing.rotate(h*Math.PI/180);
+		drawing.fillRect(-5,-100,10,130);
+		drawing.restore();
+	}
+	var piantMin=function(drawing){
+		var date=new Date();
+		drawing.save();
+		drawing.fillStyle="black";
+		var h=date.getHours()>12?date.getHours()-12:date.getHours();
+		var m=date.getMinutes();
+		var s=date.getSeconds();
+		h=30*(h+m/60);
+		m=6*(m+s/60);
+		s=6*s;
+		//m=0;
+		drawing.translate(200,200);
+		drawing.rotate(m*Math.PI/180);
+		drawing.fillRect(-3,-150,6,180);
+		drawing.restore();
+
+	}
+	var piantSec=function(drawing){
+		var date=new Date();
+		drawing.save();
+		drawing.fillStyle="black";
+		var h=date.getHours()>12?date.getHours()-12:date.getHours();
+		var m=date.getMinutes();
+		var s=date.getSeconds();
+		h=30*(h+m/60);
+		m=6*(m+s/60);
+		s=6*s;
+		//s=0;
+		drawing.translate(200,200);
+		drawing.rotate(s*Math.PI/180);
+		drawing.moveTo(-1,-170);
+		drawing.lineTo(1,-170);
+		drawing.lineTo(2,30);
+		drawing.lineTo(-2,30);
+		drawing.fill();
+		drawing.closePath();
+		drawing.restore();
+
+	}
+	var piantPoint=function(drawing){
+		drawing.fillStyle="rgb(233,233,233)";
+		drawing.moveTo(200,200);
+		drawing.beginPath();
+		drawing.arc(200,200,4,0,Math.PI*2,true);
+		drawing.fill();
+		drawing.closePath();
+
+	}
+	var update=function(){
+		piantClock(drawing);
+		piantHour(drawing);
+		piantMin(drawing);
+		piantSec(drawing);
+		piantPoint(drawing);
+		requestAnimationFrame(update);
+	}
+	requestAnimationFrame(update);
+</script>
+</body>
+</html>

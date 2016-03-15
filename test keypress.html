@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test keypress</title>
+	<style>
+		:focus{
+			background: green
+		}
+	</style>
+</head>
+<body>
+	<input type="text" value="text">
+	<input type="button" value="button">
+	<input type="number" value="">
+	<a href="javascript:void(0)">tag a</a>
+	<p>tag p</p>
+	<div>tag p</div>
+	<script>
+		function testKeyPress(e) {
+			console.log(e.key);
+			console.log((e.target.innerHTML||e.target.type)+" pressed,key is "+e.key);
+		}
+		document.body.onkeypress=testKeyPress;
+		document.getElementsByTagName('a')[0].onkeypress=testKeyPress;
+		document.body.onclick=function (e) {
+			
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+window.addEventListener("online",function(){
+	console.log("online");
+},false);
+window.addEventListener("offline",function(){
+	console.log("offline");
+},false);
+applicationCache.addEventListener("checking",function(e){
+	console.log(e);
+},false);//检查缓存文件是否更新
+applicationCache.addEventListener("noupdate",function(e){
+	console.log(e);
+},false);//不需要更新时触发
+applicationCache.addEventListener("dowloading",function(e){
+	console.log(e);
+},false);//开始下载的时候触发
+applicationCache.addEventListener("progress",function(e){
+	console.log(e);
+},false);//下载过程中触发
+applicationCache.addEventListener("cached",function(e){
+	console.log(e);
+},false);//下载完毕或缓存成功
+applicationCache.addEventListener("updateready",function(e){
+	console.log(e);
+},false);//下载完毕
+applicationCache.addEventListener("obsolete",function(e){
+	console.log(e);
+},false);//找不到manifest缓存文件
+applicationCache.addEventListener("error",function(e){
+	console.log(e);
+},false);//下载失败

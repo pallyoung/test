@@ -1,0 +1,51 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charest="utf-8"/>
+<title>图片上传预览</title>
+<link rel="stylesheet" type="text/css" href="css/common.css"/>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript">
+var overlay;
+    function fileChange(e){
+      events=e.srcElement;
+      img=fan6("#imgs img");
+      if(events.files[0].getAsDataURL){
+        img.box[0].src=events.files[0].getAsDataURL();
+      }else{
+      img.box[0].src=events.value;
+    }
+    }
+  window.onload=function() {
+    var select=fan6(document.forms[0].select);
+    var file=fan6(document.forms[1].children[0]);
+    overlay=new fan6.overlay(fan6(".overlay").box[0],fan6(".overlayBack").box[0],fan6(".forward").box[0]);
+    file.eventAdd("change",fileChange);
+    select.eventAdd("click",function(){overlay.show()});
+
+  }
+</script>
+</head>
+<body>
+<form method="post" action="#" enctype="multipart/form-data">
+	<input type="file" name="pic" style="display:none"/>
+	<input type="text" name="fName"/>
+	<input type="button" name="select" value="浏览..." />
+	<input type="submit" name="submit" value="上传"></form>
+<div class="overlay">	
+	<div class="overlayBack"></div>
+	<div class="forward" style="width:650px;height:450px">
+		<div>
+		<h2>图片预览</h2>
+		<a class="close" href="javascript:void(0)"></a>
+		</div>
+		<div>
+			<form>
+				<input type="file"/>
+			</form>
+			<div id="imgs" style="width:600px;height:400px;overflow:hidden"><img src=""></div>			
+		</div>
+	</div>
+</div>
+</body>
+</html>

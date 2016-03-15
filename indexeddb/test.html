@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test IndexedDb</title>
+</head>
+<body>
+	<input type="text" placeholder="title">
+	<input type="text" placeholder="author">
+	<input type="text" placeholder="isbn">
+	<input type="button" onclick="addBook()" value="add">
+	<table id="booklist">
+		<!-- <input type="button" onclick="queryBooks()" value="query"> -->
+	</table>
+	<div id="log">
+		
+	</div>
+	
+	<script>
+	function formatMsg(msg){
+		return"<p>i  "+new Date().toLocaleString()+":"+msg+"</p>";
+	}
+	function log (msg) {
+		var msgBox=document.getElementById('log');
+		msgBox.innerHTML+=formatMsg(msg);
+	}
+	function getSupport(){
+		window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+		if(!window.indexedDB){
+			log("浏览器不支持");
+		}
+	}
+	function wrapperRequest(event){
+		var request;
+		switch (event.type)
+		{
+			case "error":
+				request={
+					type:"error",
+					error:event.target.error
+				};
+				break;
+			case "success":
+				request={
+					type:"success",
+					error:event.target.error
+				};
+				break;
+			case "upgradeneeded":
+				cb();
+				break;
+		}
+	}
+		/*
+		*@param {Object} args ={
+			name:"test",
+			objectStore:"lib",
+			keyPath:"key",
+			index:[],
+			autoIncrement:false,
+			access:"readonly",
+			callback:function(){}
+		}
+		*@return {objectStore||null}
+		*/
+	function getObjectStore(args) {
+		
+		var cb = function(event) {
+			var request = event.target.result;
+			switch (event.type) {
+				case "error":
+					log(event.target.error.message);
+					break;
+				case "success":
+					var transaction= request.transaction(args.objectStore, args.access);
+					transaction.onerror=function(event){
+						log(event.target.error.message);
+					}
+					transaction.onsuccess=function(){
+						log("transaction success");
+					}
+					transaction.oncomplete=function(){
+						log("transaction complete");
+					}
+					var objectStore=transaction.objectStore(args.objectStore);
+					args.callback.call(request,objectStore);
+					break;
+				case "upgradeneeded":
+					if (!request.objectStoreNames.contains(name)) {
+						var store = request.createObjectStore(name, {
+							keyPath: args.keyPath,
+							autoIncrement: args.autoIncrement || false
+						});
+					}
+					break;
+			}
+		}
+		openDB(args.name, Date.now(), cb);
+	}
+	function addData(objectStore,data,cb){
+		var request=objectStore.add(data);
+		request.onerror=function(e){
+			log(e.target.error.message);
+		}
+		//request.onsuccess=cb;
+	}
+	function openDBEventHandle(event,cb){
+		var request=wrapperRequest(event);
+
+		cb(request);
+	}
+	function openDB(name,version,cb){
+		var indexedDB=window.indexedDB;
+		var request=indexedDB.open(name,version);
+		request.onerror=cb;
+		request.onsuccess=cb;
+		request.onupgradeneeded=cb;
+	}
+	(function main(){
+		getSupport();
+		var indexedDB=window.indexedDB;
+		var request =indexedDB.open("MyTestDatabase",Date.now());
+		request.onerror = function(event) {
+  			log(event.target.error);
+		};
+	request.onupgradeneeded = function(event) {
+		// The database did not previously exist, so create object stores and indexes.
+		database = event.target.result;
+		log(event.type);
+		log(database.version)
+		if (!database.objectStoreNames.contains('books')) {
+			var store = database.createObjectStore("books", {
+				keyPath: "isbn"
+			});
+			var titleIndex = store.createIndex("by_title", "title", {
+				unique: true
+			});
+			var authorIndex = store.createIndex("by_author", "author");
+
+			// Populate with initial data.
+		
+		}
+
+
+
+	};
+		request.onsuccess = function(event) {
+			log(event.type)
+  			log("open database success");
+  			var result=event.target.result;
+  			var transaction=result.transaction("books",'readwrite'); 
+            var store=transaction.objectStore("books");
+            	store.put({
+				title: "Quarry Memories",
+				author: "Fred",
+				isbn: 123456
+			});
+			store.put({
+				title: "Water Buffaloes",
+				author: "Fred",
+				isbn: 234567
+			});
+			store.put({
+				title: "Bedrock Nights",
+				author: "Barney",
+				isbn: 345678
+			});
+			store.put({
+				title: "Hello indexedDB",
+				author: "Ye",
+				isbn: 2345678
+			}); 
+            var index = store.index("by_title");
+            var data = index.get("Bedrock Nights");
+ 			data.onerror = function(event){
+ 				log("Did not get the object!");
+			};
+			data.onsuccess = function(event){
+ 				var result = event.target.result;
+ 				log(result.title);
+ 				database.close();
+			};	
+
+		}
+		showBook() ;
+	})()
+	function addBook(){
+		var input=document.getElementsByTagName('input');
+		var book={
+			title: input[0].value,
+			author: input[1].value,
+			isbn: 1*input[2].value
+		}
+		input[0].value="";
+		input[1].value="";
+		input[2].value="";
+
+		getObjectStore({
+			name:"MyTestDatabase",
+			objectStore:"books",
+			access:"readwrite",
+			callback:function(os){
+				addData(os,book,showBook);
+				showBook();
+			}
+
+		})
+	}
+	function showBook() {
+			getObjectStore({
+						name: "MyTestDatabase",
+						objectStore: "books",
+						access: "readonly",
+						callback: function(os) {
+							var list=document.getElementById("booklist");
+							var html=["<tr><th>标题</th><th>作者</th><th>ISBN</th></tr>"];
+							os.openCursor().onsuccess = function(event) {
+								var cursor = event.target.result;
+								if (cursor) {
+									console.log(cursor);
+									html.push("<tr><th>"+cursor.value.title+"</th><th>"+cursor.value.author+"</th><th>"+cursor.value.isbn+"</th></tr>");
+									cursor.continue();
+								} else {
+									list.innerHTML+=html.join("");
+								}
+							};
+						}
+
+		})
+	}
+
+	function open(name,callback){
+		var indexedDB=window.indexedDB;
+		var request=indexedDB.open(name,version);
+		request.onerror=cb;
+		request.onsuccess=cb;
+		request.onupgradeneeded=cb;
+	}
+	function createObjectStore(name,callback){
+
+	}
+	</script>
+</body>
+</html>

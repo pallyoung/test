@@ -1,0 +1,30 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>autoResize</title>
+</head>
+<body>
+	<img src="imgs/login.png" style="width:100px;height:100px">
+<script type="text/javascript">
+function autoResize (aElement) {
+	var aElement=aElement;
+	var computerdStyle=window.getComputedStyle(aElement,null);
+	var width=parseInt(computerdStyle.width);
+	var height=parseInt(computerdStyle.height);
+	interval=setInterval(function(){
+                            if(width<600){
+                            	width=width+10;
+                            	height=height+10;
+                            	aElement.style.width=width+"px";
+                            	aElement.style.height=height+"px";
+                            }else{
+                            	clearInterval(interval);
+                            }
+	},10);
+		// body...
+	}
+	autoResize(document.images[0]);	
+</script>
+</body>
+</html>

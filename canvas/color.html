@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>color</title>
+</head>
+<body>
+	<p><label for="">r:</label><input type="range" min="0" max="255" value="0"><input type="number" min="0" max="255" value="0" tabindex="1"></p>
+	<p><label for="">g:</label><input type="range" min="0" max="255" value="0"><input type="number" min="0" max="255" value="0" tabindex="2"></p>
+	<p><label for="">b:</label><input type="range" min="0" max="255" value="0"><input type="number" min="0" max="255" value="0" tabindex="3"></p>
+	<p><label for="">a:</label><input type="range" min="0" max="255" value="255"><input type="number" min="0" max="255" value="255" tabindex="4"></p>
+	<p>
+		<canvas id="color" width="100" height="100"></canvas>
+	</p>
+	<script>
+		var inputs=document.getElementsByTagName('input');
+		var color=document.getElementsByTagName("canvas")[0].getContext("2d");
+		document.body.addEventListener("change",function (e) {
+			if(e.target.type==="range"){
+				e.target.nextElementSibling.value=e.target.value;
+			}else{
+				e.target.previousElementSibling.value=e.target.value;
+			}
+			var imageData=color.getImageData(0,0,100,100);
+			var data=imageData.data;
+			for(var i=0;i<=data.length/4;i++){
+				data[i*4]=inputs[0].value;
+				data[i*4+1]=inputs[2].value;
+				data[i*4+2]=inputs[3].value;
+				data[i*4+3]=inputs[6].value;
+			}
+			color.putImageData(imageData,0,0);
+			
+		},false);
+	</script>
+</body>
+</html>

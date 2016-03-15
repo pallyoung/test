@@ -1,0 +1,80 @@
+
+#title{
+    top:110px;
+    height: 78px;
+    width: 100%;
+    text-align:center;
+    line-height: 78px;
+    font-size: 36px;
+    background: white;
+}
+#wrapper{
+    bottom: 0px;
+     background: #f7f7f7;
+     font-size: 0px;
+}
+.bb2{
+  border-bottom:2px solid #f7f7f7 
+}
+
+#wrapper.bge5{
+   background: #e5e5e5;
+}
+
+
+.row{
+  width: 50%;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 0px;
+  word-spacing: 0px;
+
+}
+.frame{
+  margin: 12px 7px 12px 7px;
+  border: 2px solid #cccccc;
+  background: #f7f7f7;
+}
+.left .frame{
+  margin-left: 14px
+}
+.content{
+  margin: 3px;
+  position: relative;
+
+}
+.content .tag{
+  height: 40px;
+  width: 40px;
+  background: url(../pic/016.gif);
+  background-size: 100% 100%;
+  color: white;
+  font-size: 15px;
+  position: absolute;
+  top:0px;
+  left: 20px
+
+}
+.content img {
+  width: 100%;
+  margin-bottom: 13px
+}
+.content p{
+  text-align: center;
+  font-size: 24px
+}
+.content p input[type="button"]{
+  width: 35px;
+  height: 30px
+}
+.content p input[type="button"]:nth-of-type(1){
+  background: url(../pic/005.gif);
+  background-size: 100% 100%
+}
+.content p input[type="button"]:nth-of-type(2){
+  background: url(../pic/029.gif);
+  background-size: 100% 100%
+}
+#wrapper *{
+  font-weight: bold;
+}

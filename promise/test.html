@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test promise</title>
+</head>
+<body>
+	<script>
+		var promise=new Promise(function(res,rej){});
+		function _promise(cb){
+			this.promise=new Promise(cb);
+		}
+		_promise.prototype.then = function(cb) {
+			this.promise.then(cb,cb);
+			return this;
+		};
+
+		function myPromise(){
+			this.resolves=[];
+			this.rejects=[];
+			this.status="pending";
+
+		}
+		myPromise.prototype.then=function(resolve,reject){
+			if(this.status==="pending"){
+				this.resolves.push(resolve);
+				this.rejects.push(reject);
+			}else if(this.status==="fail"){
+				reject.call(this,this.data);
+			}else if(this.status==="done"){
+				resolve.call(this,this.data);
+			}
+			return this;
+		}
+		myPromise.prototype.reject=function(data){
+			this.status="fail";
+			this.data=data;
+			this.fire();
+		}
+		myPromise.prototype.resolve=function(data){
+			this.status="done";
+			this.data=data;
+			this.fire();
+		}
+		myPromise.prototype.fire=function(type){
+			var lists;
+			if(this.status==="done"){
+				lists=this.resolves;
+			}else{
+				lists=this.rejects;
+			}
+			while(lists.length!==0){
+				lists.shift().call(this,this.data);
+			}
+		}
+
+
+	
+	</script>
+</body>
+</html>

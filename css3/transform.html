@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>transform</title>
+</head>
+<style>
+body{
+/*	perspective:200px;*/width: 100%;margin: 0;
+}
+	div{
+		width: 200px;
+		height: 100px;
+		background: rgb(99,22,3) url(img/test.ico) 200px 100px;
+		margin: 10px;
+		/*float: left;*/
+	}
+	p{
+		background: rgb(121,222,3);
+		display: inline-block;
+		height: 30px;
+		margin: 5px;
+		transform:rotateY(90deg);
+		width: 40px;
+
+	}
+	div:nth-child(1){
+	/*transform:translateZ(50px) rotate(45deg)*/
+	/*perspective:100px;
+	perspective-origin:2000px 100px;*/
+	transform:rotateY(180deg);
+	backface-visibility: hidden
+
+
+	}
+	div:nth-child(2){
+		transform:skew(45deg,-45deg) scale(0.707,0.707);
+	}
+	div:nth-child(3){
+		/*transform:skew(30deg,0deg);*/
+		/*transform:matrix(2,0,0,2,0,0);*/
+		transform:matrix(0,1,1,0,0,0);
+		/*transform:matrix(1,1,-1,1,0,0);*/
+	}
+	div:nth-child(4){
+		transform:rotate(180deg);
+		transform-origin:200px 0px;
+	}
+	div:nth-child(5){
+		transform:matrix3d(0.558005, 0, 0, 0, 0, 0.417755, 0, 0, 0, 0, 0.516202, 0, 0,0,0, 2);
+	}
+	div:nth-child(6){
+		transform:skew(0deg,30deg); /*scale(0.707,0.707)*/
+	}
+	div:nth-child(7){
+		transform: matrix3d(2,0,0,0,0,2,0,0,0,0,2,0,0,0,0,1);
+	}
+	div:nth-child(8){
+		transform: rotate3d(1,1,1,30deg);
+		
+		
+	}
+	div:nth-child(9){
+		transform: matrix3d(2,0,0,0,0,2,0,0,0,0,2,0,0,0,0,1);
+	}
+	div:nth-child(10){
+		transform: translateZ(400px)/*rotateY(45deg)*/;
+	}
+
+</style>
+<body>
+	<div><p></p>
+	<p></p>
+	<p></p></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+</body>
+</html>

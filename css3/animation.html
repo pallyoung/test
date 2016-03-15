@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>animation</title>
+	<script src="../timing-function.js"></script>
+	<style>
+	body{
+		position: relative;width: 100%;margin: 0;
+	}
+	div{
+		width: 100px;
+		height:100px;
+		background: rgb(11,237,32);
+		margin: 10px;
+	}
+	@-webkit-keyframes action1{
+		0%{left:400px}
+		20%{left:800px}
+		100%{left:1000px}
+	}
+	div:nth-child(1){
+		-webkit-animation:action1 10s steps(3) 5s 99999 backwards;
+		/*-webkit-animation:action1 5s cubic-bezier(0.5, 2, 0.5, -1) 0s 1 alternate; (0.25, -0.5, 0.75, 1.5)*/
+		cubic-bezier(0.2,0.94,0.64,0.19)
+	/*	-webkit-animation-fill-mode:none;*/
+		-webkit-animation-play-state:running;
+		position: absolute;
+		left:100px;
+	}
+.contionPoint{
+	background: rgba(0,0,0,0);
+	height: 50px;
+	margin:0px;
+	/*border: 10px dotted rgba(0,0,0,0);*/
+	position: absolute;
+	width: 50px;
+}
+.contionPoint p{
+	height: 3px;
+	margin:0px;
+	/*border: 10px dotted rgba(0,0,0,0);*/
+	position: absolute;
+	width: 3px;
+	top:0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	background:black;
+}
+.contionPoint:hover{
+	cursor:pointer;
+}
+	</style>
+</head>
+<body>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div id="back" style="width:450px;height:450px;margin:0;border:5px solid black;border-radius:5px;position:relative">
+		<canvas id="cubicBezier" width="450" height="450">			
+		</canvas>
+		<div id="controlPoint1" class="contionPoint" style="left:250px;top:130px;"><p></p></div>
+		<div id="controlPoint2" class="contionPoint" style="left:300px;top:160px;"><p></p></div>
+	</div>
+	<script>
+	var back=document.getElementById('back')
+	var cubicBezier=document.getElementById('cubicBezier');
+	var context=cubicBezier.getContext("2d");
+	var changePointToCo=function(arr){
+		var _arr=arr.slice();
+		for(var i=0;i<2;i++){
+			_arr[i*2]=(_arr[i*2]-200)/100;
+			_arr[i*2+1]=(200-_arr[i*2+1])/100;
+		}
+		return _arr;
+	}
+	var mouseMove={
+		startPoint:{},
+		requestFrame:null,
+		down:function(event){
+			console.log(event.target);
+			event.currentTarget.addEventListener("mousemove",mouseMove.move,false);
+			mouseMove.startPoint={
+				x:event.clientX,
+				y:event.clientY
+			};
+			return {
+				x:event.clientX,
+				y:event.clientY
+			}
+		},
+		move:function(event){
+			if(mouseMove.requestFrame!==null){
+				return;
+			}
+			mouseMove.requestFrame=requestAnimationFrame(function(){
+				mouseMove.requestFrame=null
+			});
+			var path={
+				x:event.clientX-mouseMove.startPoint.x,
+				y:event.clientY-mouseMove.startPoint.y//位移
+			};
+			mouseMove.startPoint={
+				x:event.clientX,
+				y:event.clientY
+			}
+			var x=event.currentTarget.style.left||0;
+			var y=event.currentTarget.style.top||0;
+			var drawPoint=[];
+			var anotherPoint=null;
+			x=parseInt(x);
+			y=parseInt(y);
+			event.currentTarget.style.left=(x+path.x)+"px";
+			event.currentTarget.style.top=(y+path.y)+"px";
+			if(event.currentTarget.id=="controlPoint1"){
+				anotherPoint=document.getElementById('controlPoint2')
+				drawPoint=[(x+path.x),
+				(y+path.y),
+				anotherPoint.style.left?parseInt(anotherPoint.style.left):0,
+				anotherPoint.style.top?parseInt(anotherPoint.style.top):0]
+			}else{
+				anotherPoint=document.getElementById('controlPoint1')
+				drawPoint=[
+				anotherPoint.style.left?parseInt(anotherPoint.style.left):0,
+				anotherPoint.style.top?parseInt(anotherPoint.style.top):0,
+				(x+path.x),
+				(y+path.y)]
+			}
+			drawCB.drawNew.apply(drawCB,changePointToCo(drawPoint));
+
+			return path;
+		},
+		up:function(event){
+			event.currentTarget.removeEventListener("mousemove",mouseMove.move,false);
+		}
+	}
+	var drawCon=function(){
+			context.fillStyle="white";
+			context.fillRect(0,0,450,450);
+			context.strokeStyle="black";
+			context.font="10px Bodoni MT bold";
+			context.beginPath();
+			context.moveTo(25,225);
+			context.lineTo(425,225);
+			context.stroke();
+			context.closePath();
+			context.beginPath();
+			context.moveTo(225,25);
+			context.lineTo(225,425);
+			context.stroke();
+			context.closePath();
+			context.beginPath();
+			context.moveTo(425,225);
+			context.lineTo(420,220);
+			context.stroke();
+			context.closePath();
+			context.beginPath();
+			context.moveTo(425,225);
+			context.lineTo(420,230);
+			context.stroke();
+			context.closePath();
+			context.beginPath();
+			context.moveTo(225,25);
+			context.lineTo(220,30);
+			context.stroke();
+			context.closePath();
+			context.beginPath();
+			context.moveTo(225,25);
+			context.lineTo(230,30);
+			context.stroke();
+			context.closePath();
+
+			context.fillStyle = "black"
+			for(var i=0;i<=4;i++){
+				context.fillText(-2+i,i*100+25,225,10);
+				context.fillText(-2+i,225,425-i*100,10);
+			}
+			context.fillText("x",400,215,10);
+			context.fillText("y",235,50,10);
+	}
+	var drawCubicBezier=function(x1,y1,x2,y2){
+			context.beginPath();
+			context.moveTo(225,225)
+			context.bezierCurveTo(x1*100+225,y1*(-100)+225,x2*100+225,y2*(-100)+225,325,125);
+			context.strokeStyle = "red";  
+			context.stroke(); 
+			context.closePath();
+			context.beginPath();
+			context.moveTo(225,225);
+			context.lineTo(325,125);
+			context.strokeStyle = "blue"; 
+			context.stroke(); 
+			context.closePath();
+			//context.font="10px Georgia bold";
+			context.fillStyle = "black";
+			context.fillText("p0("+x1+","+y1+")",x1*100+230,y1*(-100)+225);
+			context.fillText("p1("+x2+","+y2+")",x2*100+230,y2*(-100)+225);
+	}
+
+	var drawCB={
+		init:function(){
+			drawCon();
+		},
+		drawNew:function (x1,y1,x2,y2) {
+			drawCon();
+			drawCubicBezier(x1,y1,x2,y2);
+
+
+		},
+		draw:function(x1,y1,x2,y2){
+			drawCubicBezier(x1,y1,x2,y2);
+
+		}
+	}
+	drawCB.init();
+	document.getElementById("controlPoint1").onmousedown=mouseMove.down;
+	document.getElementById("controlPoint1").onmouseup=mouseMove.up;
+	document.getElementById("controlPoint2").onmousedown=mouseMove.down;
+	document.getElementById("controlPoint2").onmouseup=mouseMove.up;
+	document.getElementById("controlPoint2").onmouseout=mouseMove.up;
+	document.getElementById("controlPoint1").onmouseout=mouseMove.up;
+
+	function drff(points){
+		var bb=cubicBezierFunction;
+		context.strokeStyle = "blue";  
+		context.moveTo(225,225);
+		context.beginPath();
+		for(var t=0;t<=1;t=t+0.005){
+			var _points=[bb.bt([points[0],points[2]],t)*100+225,225-bb.bt([points[1],points[3]],t)*100]
+			context.lineTo(_points[0],_points[1]);			
+		}
+		console.log(1);
+		context.stroke(); 
+	}
+	function diff(points){
+		var cc=new cb(points);
+		context.strokeStyle = "rgb(22,44,77)";  
+		context.moveTo(225,225);
+		context.beginPath();
+		for(var x=0;x<=1;x=x+0.005){
+			var _points=[x*100+225,225-cc.getY(x)*100]
+			context.lineTo(_points[0],_points[1]);			
+		}
+		context.stroke(); 
+	}
+
+	</script>
+</body>
+</html>

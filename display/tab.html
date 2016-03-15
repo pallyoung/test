@@ -1,0 +1,76 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charest="utf-8"/>
+	<title>选项卡演示</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css"/>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script type="text/javascript">
+	window.onload = function() {
+		tabtag = fan6(".tabTag").box[0];
+		span = tabtag.children;
+		tabtag.addEventListener("mouseover", function(event) {
+			target = event.srcElement;
+			if(target.tagName!=="SPAN"){return;}
+			for (var i = 0; i < span.length; i++) {
+				if(target!==span[i]){
+				span[i].style.removeProperty("border-top");
+			}
+			else{
+				span[i].style.borderTop = "solid 3px purple";
+				fan6(".tabContent").box[0].style.right=300*i+"px";
+			}
+			}
+		}, false);
+	}
+	</script>
+	</head>
+<body>
+	<div class="tab" style="width:300px;position:relative;left:300px;top:50px;overflow:hidden">
+	    <div class="tabTag">
+	    	<span style="border-top:solid 3px purple">热点新闻</span>
+			<span>最近更新</span>
+			<span>最多评论</span>
+	    </div>
+		<div class="tabContent" style="width: 900px;height: 20em;">
+			<ul style="width: 300px;">
+			     <li ><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112893043283">金色HTC One德国独家开卖</a></li>
+                 <li ><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112892855202">三星电子一年广告投入超冰岛GDP</a></li>
+                 <li ><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112885616734">HTC Desire四款中端机齐发</a></li>
+                 <li ><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112885431580">Moto G：千元价位下表现优秀的智能机</a></li>
+                 <li ><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112885250617">诺基亚发布Lumia 525/526</a></li>
+                 <li ><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112885226184">已证实Android将支持RAW格式和高速连拍</a></li>
+                 <li ><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112885126385">Jolla手机芬兰正式开卖</a></li>
+                 <li ><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112885033910">安卓通知点亮屏幕技巧</a></li>
+                 <li ><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112884923968">Galaxy S5更多内幕曝光</a></li>
+                 <li ><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112884855222">传iPad mini二代供应已得到改善</a></li>
+            </ul>
+			<ul style="width: 300px;">
+				 <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=20130919114342776">升级iOS 7时要注意的6点</a></li>
+                 <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013092585411839"> 或受制指纹传感器产量苹果新机供应紧缺</a></li>
+                 <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=20130917202959382">首次适配1080P屏幕 Find 5刷锤子ROM体验</a></li>
+                 <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013101685302217">耐克发布第二代Fuelband</a></li>
+                 <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=20130905232740684">索尼旗舰新机Xperia Z1售价公布</a></li>
+                 <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=20130730203134238">Lumia 1020行货上市时间曝光 或售4799</a></li>
+                 <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013101485931573">nubia Z7或抢先小米3骁龙800版发行</a></li>
+                 <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=20130618195622705">谁能夺第三？WP8/BB10半年度回顾与展望</a></li>
+                 <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013092590146103">iPhone成本曝光 iPhone 5s/5c成本分别为199和173美元</a></li>
+                 <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=20131109130010831">微软收回中国区Skype运营权</a></li>
+
+			</ul>
+			<ul style="width: 300px;">
+				  <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112792341569">HTC M8详细配置曝光</a></li>
+				  <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112792308377">国行4G版三星Note3/S4曝光</a></li>
+				  <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112792229094">黑莓Z30开箱图赏</a></li>
+				  <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112791948333">三星GALAXY Grand 2发布</a></li>
+				  <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112791919577">韩媒称三星曲面手机销量不足万台</a></li>
+				  <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112791849700">传LG已着手研发G Flex 2</a></li>
+				  <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112791820545">诺基亚另一款Asha设备诺曼底曝光</a></li>
+				  <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112791708377">电信版联想K910e真机亮相</a></li>
+				  <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112791601117">Skype中国换伴：告别“深度合作”</a></li>
+				  <li><a target="_blank" href="http://www.fan6.com.cn/news/articles.aspx?id=2013112791446413">索尼Xperia Z1s官方图曝光</a></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

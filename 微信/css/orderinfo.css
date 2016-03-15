@@ -1,0 +1,98 @@
+#title{
+    width: 100%;
+    text-align:center;
+    font-size: 36px;
+    background: #f7f7f7;
+    border-bottom: 2px solid #cccccc;
+    font-weight: bold;
+     line-height: 78px;
+     height: 78px;
+}
+#wrapper{
+    bottom: 0px; 
+
+}
+.list{
+  height: 220px;
+}
+.list>div:nth-child(1){
+   float:right;
+   margin-left: -190px;
+   width: 100%;
+  height: 200px;
+  overflow: hidden;
+  font-size: 20px;
+  font-weight: bold;
+
+}
+.list>div:nth-child(1)>div:nth-child(1){
+  margin-left: 190px;
+  padding-right: 20px;
+  height: 100%;
+}
+.list>div:nth-child(1)>div:nth-child(1)>p{
+  margin-bottom: 10px;
+  display: block;
+  width: auto;
+}
+.list>div:nth-child(1)>div:nth-child(1)>p:nth-child(1){
+  margin-top: 25px;
+  padding-right: 20px
+}
+.list>div:nth-child(1)>div:nth-child(1)>p:nth-child(even){
+  color: #7f7f7f;
+}
+.list>div:nth-child(2){
+  width: 150px;
+  margin: 25px 20px;
+  height: 150px;
+  float:left;
+}
+.list>div:nth-child(2)  img{
+  width: 150px;
+   height: 150px;
+}
+.liuc{
+  height: 360px;
+  text-align: center;
+  background: url(../pic/down.jpg);
+  background-size:100% 100%;
+  font-size: 24px;
+  position: relative;
+  color: #7f7f7f
+}
+.liuc>p{
+  position: absolute;
+}
+.liuc>p:nth-child(n+2){
+  quotes:"(" ")";
+}
+.liuc>p:nth-child(n+2):before{
+  content: open-quote;
+  color: #000000;
+}
+.liuc>p:nth-child(n+2):after{
+  content: close-quote;
+  color: #000000;
+}
+
+.liuc>p:nth-child(1){
+  top:50px;
+  right: 55%;
+  font-size: 18px;
+
+}
+.liuc>p:nth-child(2){
+   top:67px;
+  left: 66%;
+  color: #de531e
+}
+.liuc>p:nth-child(3){
+   top:215px;
+  right: 70%;
+   color: #de531e
+}
+
+.list>div:nth-child(1)>div:nth-child(1)>p.pr0{
+  padding-right: 0px
+}

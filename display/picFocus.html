@@ -1,0 +1,114 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charest="utf-8"/>
+	<title>图片轮播</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css"></head>
+	<script type="text/javascript" src="js/base.js"></script>
+	<script type="text/javascript">
+	function showPre (e) {
+		//event=e;
+		var ul=fan6(".picFocus ul");
+		var left=parseInt(ul.styleComputed("left"));
+		if(left.toString()==="NaN"){
+			left=0;
+		}
+		var width=parseInt(fan6(".picFocus").styleComputed("width"));
+		var i=left/(0-width);//当前显示的是第几幅图片
+		//控制图片移动
+		if(left	<0){
+	    ul.styleMove("left",-(i-1)*width+"px",200);
+	    btnShow(i-1);
+	}else {
+		ul.styleMove("left","0px",200);
+		btnShow(0)
+	}
+
+	}
+	function showNext(e){
+		var ul=fan6(".picFocus ul");
+		var left=parseInt(ul.styleComputed("left"));
+		if(left.toString()==="NaN"){
+			left=0;
+		}
+		var width=parseInt(fan6(".picFocus").styleComputed("width"));
+		var i=left/(0-width);//当前显示的是第几幅图片
+		//控制图片移动
+		if(left>-4*width){
+	    ul.styleMove("left",-(i+1)*width+"px",200);
+	    btnShow(i+1);
+	}else {
+		ul.styleMove("left",-4*width+"px",200);
+		btnShow(4);
+	}
+	}
+	function btnClick(e){
+		var events=e.srcElement;
+		if(events.tagName==="SPAN"){
+		var i=fan6(events).index();
+		var ul=fan6(".picFocus ul");
+		var width=parseInt(fan6(".picFocus").styleComputed("width"));
+		btnShow(i);
+		ul.styleMove("left",-i*width+"px",200);
+	}
+	}
+	function preNextOver(e){
+		var events=e.srcElement;
+		events.style.opacity="0.5";
+	}
+	function preNextOut(e){
+		var events=e.srcElement;
+		events.style.opacity="0.2";
+	}
+	function btnShow(i){
+		var btn=fan6(".btn");
+		btn.styleAdd("opacity","0.2");
+		fan6(btn.box[i]).styleAdd("opacity","1");
+	}
+	window.onload=function(){
+		var pre=fan6(".picFocus .pre");
+		var next=fan6(".picFocus .next");
+		var btn=fan6(".picFocus .btnBar");
+		pre.eventAdd("click",showPre);
+		pre.eventAdd("mouseover",preNextOver);
+		pre.eventAdd("mouseout",preNextOut);
+		next.eventAdd("click",showNext);
+		next.eventAdd("mouseover",preNextOver);
+		next.eventAdd("mouseout",preNextOut);
+		btn.eventAdd("mouseover",btnClick);
+		btnShow(0);
+	}
+	</script>
+</head>
+<body>
+	<div class="picFocus" style="width:800px;height:400px;left:100px;top:100px">
+		<ul style="width:4000px;">
+			<li>
+				<img src="pics/pic1.jpg"/>
+			</li>
+			<li>
+				<img src="pics/pic2.jpg"/>
+			</li>
+			<li>
+				<img src="pics/pic3.jpg"/>
+			</li>
+			<li>
+				<img src="pics/pic4.jpg"/>
+			</li>
+			<li>
+				<img src="pics/pic5.jpg"/>
+			</li>
+		</ul>
+		<div class="preNext pre"></div>
+		<div class="preNext next"></div>
+		<div class="btnBack"></div>
+		<div class="btnBar">
+			<span class="btn"></span>
+			<span class="btn"></span>
+			<span class="btn"></span>
+			<span class="btn"></span>
+			<span class="btn"></span>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+	"main": "start",
+	"description":"test server",
+	"dependencies": {
+		"s2server": ">= 0.0.0"
+	},
+	"bugs": {
+		"email": "pallyoung@163.com"
+	}
+}

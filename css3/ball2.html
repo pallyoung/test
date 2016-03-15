@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>旋转的球</title>
+</head>
+<style>
+@-webkit-keyframes round{
+	0%{
+		transform:rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+
+	}
+	100%{
+		transform:rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+	}
+}
+	#stage{
+		width: 400px;
+		height: 400px;
+		perspective:800px
+		perspective-origin:200px 200px;
+		transform-style:preserve-3d;
+		transform:rotateY(-45deg);
+		position: relative;
+		-webkit-animation:round 10s linear 0s infinite normal;
+		-webkit-animation-play-state:running;
+
+	}
+	#stage div{
+		border-radius: 50%;
+		border:1px dotted rgb(221,77,22);
+		box-sizing: border-box;
+		width:240px;
+		height: 240px;
+		position: absolute;
+		left: 80px;
+		top: 80px;
+	}
+	.width1{
+		width:100px;
+		height:100px;
+	}
+	#stage .meridians1{
+		transform:rotateY(90deg);
+	}
+	#stage .meridians2{
+		transform:translateX(45px) rotateY(90deg);
+		width:220px;
+		height:220px;
+		top: 90px;
+		left:90px;
+	}
+	#stage .meridians3{
+		transform:translateX(85px) rotateY(90deg);
+		width:170px;
+		height:170px;
+		top: 115px;
+		left: 115px;
+	}
+	#stage .meridians4{
+		transform:translateX(110px) rotateY(90deg);
+		width:46px;
+		height:46px;
+		top: 177px;
+		left:177px;
+
+	}
+	#stage .meridians5{
+		transform:translateX(-45px) rotateY(90deg);
+		width:220px;
+		height:220px;
+		top: 90px;
+		left:90px;
+	}
+	#stage .meridians6{
+		transform:translateX(-85px) rotateY(90deg);
+		width:170px;
+		height:170px;
+		top: 115px;
+		left: 115px;
+
+	}
+	#stage .meridians7{
+		transform:translateX(-110px) rotateY(90deg);
+		width:46px;
+		height:46px;
+		top: 177px;
+		left:177px;
+	}
+	#stage .parallel1{
+	}
+	#stage .parallel2{
+		transform:translateZ(-45px);
+		width:220px;
+		height:220px;
+		top: 90px;
+		left:90px;
+	}
+	#stage .parallel3{
+		transform:translateZ(-85px);
+		width:170px;
+		height:170px;
+		top:115px;
+		left: 115px;
+	}
+	#stage .parallel4{
+		transform:translateZ(-110px);
+		width:46px;
+		height:46px;
+		top: 177px;
+		left:177px;
+	}
+	#stage .parallel5{
+		transform:translateZ(110px);
+		width:46px;
+		height:46px;
+		top: 177px;
+		left:177px;
+	}
+	#stage .parallel6{
+		transform:translateZ(85px);
+		width:170px;
+		height:170px;
+		top: 115px;
+		left: 115px;
+	}
+	#stage .parallel7{
+		transform:translateZ(45px);
+		width:220px;
+		height:220px;
+		top: 90px;
+		left:90px;
+	}
+</style>
+<body>
+	<div id="stage">
+		<div class="meridians1"></div>
+		<div class="meridians2"></div>
+		<div class="meridians3"></div>
+		<div class="meridians4"></div>
+		<div class="meridians5"></div>
+		<div class="meridians6"></div>
+		<div class="meridians7"></div>
+		<div class="parallel1"></div>
+		<div class="parallel2"></div>
+		<div class="parallel3"></div>
+		<div class="parallel4"></div>
+		<div class="parallel5"></div>
+		<div class="parallel6"></div>
+		<div class="parallel7"></div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>react demo 1</title>
+	<script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+</head>
+<body>
+	<div id="container"></div>
+	<script type="text/babel">
+		var Timer = React.createClass({
+			getInitialState:function(){
+				return {
+					heading:"一个简单的计时器"
+				}
+			},
+			componentDidMount:function(){
+				var self = this;
+				setTimeout(function(){
+					self.forceUpdate();
+				},500);
+			},
+			componentDidUpdate:function(){
+				var self = this;
+				setTimeout(function(){
+					self.forceUpdate();
+				},500);
+			},
+			render:function(){
+				return (
+					<div>
+						<h2>{this.state.heading}</h2>
+						<p>{new Date().toLocaleString()}</p>
+					</div>
+					);
+			}
+		});
+
+		class Timer2 extends React.Component{
+			constructor(...args){
+				super(args);
+				this.state = {
+					heading:"另一个一个简单的计时器"
+				}
+			}
+			componentDidMount(){
+				var self = this;
+				setTimeout(function(){
+					self.forceUpdate();
+				},500);
+			}
+			componentDidUpdate(){
+				var self = this;
+				setTimeout(function(){
+					self.forceUpdate();
+				},500);
+			}
+			render(){
+				return (
+					<div>
+						<h2>{this.state.heading}</h2>
+						<p>{new Date().toLocaleString()}</p>
+					</div>
+					);
+			}
+		}
+		ReactDOM.render(<Timer2 />,document.getElementById("container"));
+	</script>
+	
+</body>
+</html>

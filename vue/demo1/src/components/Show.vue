@@ -13,12 +13,7 @@ export default {
   },
   data () {
     return {
-      content: 'more'
-    }
-  },
-  route: {
-    data () {
-      this.$dispatch('page', '更多')
+      content: 'show'
     }
   }
 }

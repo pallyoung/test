@@ -1,5 +1,7 @@
 <template>
-  <router-view></router-view>
+  <div class="hello">
+    <h1>{{ msg }}</h1>
+  </div>
 </template>
 <script>
 export default {
@@ -10,6 +12,11 @@ export default {
       // preserves its current state and we are modifying
       // its initial state.
       msg: 'Hello World!'
+    }
+  },
+  route: {
+    data () {
+      this.$dispatch('page', '首页')
     }
   }
 }

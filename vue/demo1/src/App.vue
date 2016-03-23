@@ -4,7 +4,11 @@
 
 <script>
 export default {
-
+  events: {
+    page: function (page) {
+      console.log('page changed ' + page)
+    }
+  }
 }
 </script>
 

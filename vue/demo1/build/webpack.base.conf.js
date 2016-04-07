@@ -71,7 +71,7 @@ module.exports = {
       extract: false
     })
   },
-  eslint: {
-    formatter: require('eslint-friendly-formatter')
-  }
+  // eslint: {
+  //   formatter: require('eslint-friendly-formatter')
+  // }
 }

@@ -46,6 +46,7 @@ Object.keys(proxyTable).forEach(function (context) {
 
 // handle fallback for HTML5 history API
 app.use(require('connect-history-api-fallback')())
+app.use(require('prerender-node').set('prerenderToken', 'exVlGarJSKPYilBxwF1c'));
 
 // serve webpack bundle output
 app.use(devMiddleware)
@@ -57,10 +58,10 @@ app.use(hotMiddleware)
 // serve pure static assets
 app.use('/static', express.static('./static'))
 
-module.exports = app.listen(8080, function (err) {
+module.exports = app.listen(3001, function (err) {
   if (err) {
     console.log(err)
     return
   }
-  console.log('Listening at http://localhost:8080')
+  console.log('Listening at http://localhost:3001')
 })
